@@ -5,8 +5,10 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
+
 #include "TheGiftCharacter.generated.h"
 
+class UMainWidget;
 class UInteractRaycast;
 class UInputComponent;
 class USkeletalMeshComponent;
@@ -14,8 +16,6 @@ class UCameraComponent;
 class UInputAction;
 class UInputMappingContext;
 struct FInputActionValue;
-
-class UInteractWidget;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
@@ -43,6 +43,10 @@ class ATheGiftCharacter : public ACharacter
 	/** Move Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	UInputAction* MoveAction;
+
+	/** Interact Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	UInputAction* InteractAction;
 	
 public:
 	ATheGiftCharacter();
@@ -78,6 +82,8 @@ protected:
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
 
+	void Interact();
+
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
@@ -94,9 +100,9 @@ public:
 		InteractingActor = Interactable;
 	}
 
-	// PlayerWidget
-	UPROPERTY(EditAnywhere) TSubclassOf<UInteractWidget> InteractWidgetTemplate;
-	UPROPERTY() UInteractWidget* InteractWidget = nullptr;
+	// Main Widget
+	UPROPERTY(EditAnywhere) TSubclassOf<UMainWidget> MainWidgetTemplate;
+	UPROPERTY() UMainWidget* MainWidget = nullptr;
 
 private:
 

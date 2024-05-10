@@ -1,7 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "TheGiftCharacter.h"
-#include "TheGiftProjectile.h"
 #include "Animation/AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -9,11 +8,13 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
-#include "InteractRaycast.h"
+#include "InteractableInterface.h"
 #include "InteractRaycast.h"
 #include "Blueprint/UserWidget.h"
 #include "Engine/LocalPlayer.h"
-#include "InteractWidget.h"
+
+#include "MainWidget.h"
+#include "Logging/StructuredLog.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -62,11 +63,11 @@ void ATheGiftCharacter::BeginPlay()
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 
-		if (InteractWidgetTemplate)
+		if (MainWidgetTemplate)
 		{
-			InteractWidget = CreateWidget<UInteractWidget>(PlayerController, InteractWidgetTemplate);
-			InteractWidget->AddToViewport();
-			InteractWidget->SetUp(this);
+			MainWidget = CreateWidget<UMainWidget>(PlayerController, MainWidgetTemplate);
+			MainWidget->AddToViewport();
+			MainWidget->SetUp(this);
 		}
 	}
 }
@@ -87,6 +88,9 @@ void ATheGiftCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATheGiftCharacter::Look);
+
+		// Interacting
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &ATheGiftCharacter::Interact);
 	}
 	else
 	{
@@ -118,6 +122,20 @@ void ATheGiftCharacter::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+void ATheGiftCharacter::Interact()
+{
+	UE_LOGFMT(LogTemp, Log, "InteractPressed");
+
+	if (InteractingActor)
+	{
+		if (IInteractableInterface::Execute_CanInteract(InteractingActor))
+		{
+			IInteractableInterface::Execute_Interact(InteractingActor);
+			MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Hidden);
+		}
+	}	
 }
 
 void ATheGiftCharacter::SetHasRifle(bool bNewHasRifle)

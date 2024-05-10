@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "TheGiftCharacter.h"
 #include "Blueprint/UserWidget.h"
+
 #include "InteractWidget.generated.h"
 
 /**
@@ -14,14 +15,12 @@ UCLASS()
 class THEGIFT_API UInteractWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
+
 public:
 	void SetUp(ATheGiftCharacter* PlayerCharacter);
 
-private:
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* InteractText = nullptr;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UImage* InteractImage = nullptr;
 
-	bool isInteracting = false;
-
-	UPROPERTY(meta = (BindWidget)) class UTextBlock* InteractText = nullptr;
-	UPROPERTY(meta = (BindWidget)) class UImage* InteractImage = nullptr;
 };

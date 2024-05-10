@@ -39,14 +39,14 @@ void AInteractableObjectBase::Interact_Implementation()
 {
 	IInteractableInterface::Interact_Implementation();
 
-	UE_LOGFMT(LogTemp, Log, "Interacting With Object");
+	
 
 	OnActivate();
 }
 
 bool AInteractableObjectBase::CanInteract_Implementation()
 {
-	return IInteractableInterface::CanInteract_Implementation();
+	//return IInteractableInterface::CanInteract_Implementation();
 
 	if (CanInteract)
 		return true;
@@ -56,6 +56,7 @@ bool AInteractableObjectBase::CanInteract_Implementation()
 
 void AInteractableObjectBase::OnActivate()
 {
-	CanInteract = false;
+	//CanInteract = false;
+	UE_LOGFMT(LogTemp, Log, "Interacting With Object");
 }
 

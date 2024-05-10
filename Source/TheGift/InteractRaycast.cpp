@@ -5,7 +5,7 @@
 
 #include "InteractableInterface.h"
 #include "InteractWidget.h"
-#include "Components/SlateWrapperTypes.h"
+#include "MainWidget.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -57,12 +57,10 @@ void UInteractRaycast::InteractRaycast(float DeltaTime)
 				{
 					PlayerCharacter->SetCurrentInteractingActor(HitResult.GetActor());
 
-					// TODO Just for testing without input
-					PlayerCharacter->InteractWidget->SetVisibility(ESlateVisibility::Visible);
 
 					if (IInteractableInterface::Execute_CanInteract(HitResult.GetActor()))
 					{
-						PlayerCharacter->InteractWidget->SetVisibility(ESlateVisibility::Visible);
+						PlayerCharacter->MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Visible);
 					}
 				}
 			}
@@ -71,14 +69,14 @@ void UInteractRaycast::InteractRaycast(float DeltaTime)
 				if (PlayerCharacter)
 				{
 					PlayerCharacter->SetCurrentInteractingActor(nullptr);
-					PlayerCharacter->InteractWidget->SetVisibility(ESlateVisibility::Hidden);
+					PlayerCharacter->MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Hidden);
 				}
 			}
 		}
 		else
 		{
 			PlayerCharacter->SetCurrentInteractingActor(nullptr);
-			PlayerCharacter->InteractWidget->SetVisibility(ESlateVisibility::Hidden);
+			PlayerCharacter->MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
 }

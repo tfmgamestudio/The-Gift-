@@ -7,4 +7,6 @@ void UInteractWidget::SetUp(ATheGiftCharacter* PlayerCharacter)
 {
 	if (!PlayerCharacter)
 		return;
+
+	this->SetVisibility(ESlateVisibility::Hidden);
 }

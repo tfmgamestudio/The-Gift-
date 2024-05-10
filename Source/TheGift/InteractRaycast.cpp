@@ -4,6 +4,7 @@
 #include "InteractRaycast.h"
 
 #include "InteractableInterface.h"
+#include "InteractWidget.h"
 #include "Camera/CameraComponent.h"
 #include "Components/SlateWrapperTypes.h"
 #include "GameFramework/DefaultPhysicsVolume.h"
@@ -55,17 +56,20 @@ void UInteractRaycast::InteractRaycast(float DeltaTime)
 
 		FHitResult HitResult;
 
-		if (UKismetSystemLibrary::LineTraceSingle(World, SpawnLocation, EndLocation, ETraceTypeQuery::TraceTypeQuery1, true, {GetOwner()}, EDrawDebugTrace::ForDuration, HitResult, true))
+		// TODO Send less raycast, not one per tick
+		if (UKismetSystemLibrary::LineTraceSingle(World, SpawnLocation, EndLocation, ETraceTypeQuery::TraceTypeQuery1, true, {GetOwner()}, EDrawDebugTrace::N, HitResult, true))
 		{
 			if (UKismetSystemLibrary::DoesImplementInterface(HitResult.GetActor(), UInteractableInterface::StaticClass()))
 			{				
 				if (PlayerCharacter)
 				{
 					PlayerCharacter->SetCurrentInteractingActor(HitResult.GetActor());
+					// TODO Just for testing without input
+					PlayerCharacter->InteractWidget->SetVisibility(ESlateVisibility::Visible);
 
 					if (IInteractableInterface::Execute_CanInteract(HitResult.GetActor()))
 					{
-						//PlayerCharacter->InteractWidget->SetVisibility(ESlateVisibility::Visible);
+						PlayerCharacter->InteractWidget->SetVisibility(ESlateVisibility::Visible);
 					}
 				}
 			}
@@ -74,9 +78,14 @@ void UInteractRaycast::InteractRaycast(float DeltaTime)
 				if (PlayerCharacter)
 				{
 					PlayerCharacter->SetCurrentInteractingActor(nullptr);
-					//PlayerCharacter->PlayerWidget->SetVisibility(ESlateVisibility::Hidden);
+					PlayerCharacter->InteractWidget->SetVisibility(ESlateVisibility::Hidden);
 				}
 			}
+		}
+		else
+		{
+			PlayerCharacter->SetCurrentInteractingActor(nullptr);
+			PlayerCharacter->InteractWidget->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
 }

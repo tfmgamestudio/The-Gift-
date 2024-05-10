@@ -5,20 +5,13 @@
 
 #include "InteractableInterface.h"
 #include "InteractWidget.h"
-#include "Camera/CameraComponent.h"
 #include "Components/SlateWrapperTypes.h"
-#include "GameFramework/DefaultPhysicsVolume.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 
-// Sets default values for this component's properties
 UInteractRaycast::UInteractRaycast()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
 }
 
 
@@ -54,18 +47,18 @@ void UInteractRaycast::InteractRaycast(float DeltaTime)
 		const FVector SpawnLocation = PlayerController->PlayerCameraManager->GetCameraLocation();
 		const FVector EndLocation = SpawnLocation + PlayerController->PlayerCameraManager->GetActorForwardVector() * 10000.f;
 
-		FHitResult HitResult;
-
 		// TODO Send less raycast, not one per tick
-		if (UKismetSystemLibrary::LineTraceSingle(World, SpawnLocation, EndLocation, ETraceTypeQuery::TraceTypeQuery1, true, {GetOwner()}, EDrawDebugTrace::N, HitResult, true))
+		FHitResult HitResult;
+		if (UKismetSystemLibrary::LineTraceSingle(World, SpawnLocation, EndLocation, ETraceTypeQuery::TraceTypeQuery1, true, {GetOwner()}, EDrawDebugTrace::None, HitResult, true))
 		{
 			if (UKismetSystemLibrary::DoesImplementInterface(HitResult.GetActor(), UInteractableInterface::StaticClass()))
 			{				
 				if (PlayerCharacter)
 				{
 					PlayerCharacter->SetCurrentInteractingActor(HitResult.GetActor());
+
 					// TODO Just for testing without input
-					PlayerCharacter->InteractWidget->SetVisibility(ESlateVisibility::Visible);
+					//PlayerCharacter->InteractWidget->SetVisibility(ESlateVisibility::Visible);
 
 					if (IInteractableInterface::Execute_CanInteract(HitResult.GetActor()))
 					{

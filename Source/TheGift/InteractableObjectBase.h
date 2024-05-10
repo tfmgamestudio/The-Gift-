@@ -21,6 +21,8 @@ public:
 	// Sets default values for this actor's properties
 	AInteractableObjectBase();
 
+	UPROPERTY(VisibleAnywhere) bool CanInteract = true;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -29,4 +31,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	virtual void Interact_Implementation() override;
+	virtual bool CanInteract_Implementation() override;
+
+	UFUNCTION() void OnActivate();
 };

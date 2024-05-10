@@ -58,7 +58,7 @@ void UInteractRaycast::InteractRaycast(float DeltaTime)
 					PlayerCharacter->SetCurrentInteractingActor(HitResult.GetActor());
 
 					// TODO Just for testing without input
-					//PlayerCharacter->InteractWidget->SetVisibility(ESlateVisibility::Visible);
+					PlayerCharacter->InteractWidget->SetVisibility(ESlateVisibility::Visible);
 
 					if (IInteractableInterface::Execute_CanInteract(HitResult.GetActor()))
 					{

@@ -9,7 +9,11 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "InteractRaycast.h"
+#include "InteractRaycast.h"
+#include "Blueprint/UserWidget.h"
 #include "Engine/LocalPlayer.h"
+#include "InteractWidget.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -39,6 +43,8 @@ ATheGiftCharacter::ATheGiftCharacter()
 	//Mesh1P->SetRelativeRotation(FRotator(0.9f, -19.19f, 5.2f));
 	Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
 
+	// RayCast
+	InteractRaycast = CreateDefaultSubobject<UInteractRaycast>(TEXT("InteractRayCast"));
 }
 
 void ATheGiftCharacter::BeginPlay()
@@ -47,14 +53,22 @@ void ATheGiftCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	// Add Input Mapping Context
-	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	
+	if (PlayerController)
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
-	}
 
+		if (InteractWidgetTemplate)
+		{
+			InteractWidget = CreateWidget<UInteractWidget>(PlayerController, InteractWidgetTemplate);
+			InteractWidget->AddToViewport();
+			InteractWidget->SetUp(this);
+		}
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////// Input
@@ -79,7 +93,6 @@ void ATheGiftCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 		UE_LOG(LogTemplateCharacter, Error, TEXT("'%s' Failed to find an Enhanced Input Component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
 	}
 }
-
 
 void ATheGiftCharacter::Move(const FInputActionValue& Value)
 {

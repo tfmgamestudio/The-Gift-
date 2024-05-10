@@ -7,12 +7,15 @@
 #include "Logging/LogMacros.h"
 #include "TheGiftCharacter.generated.h"
 
+class UInteractRaycast;
 class UInputComponent;
 class USkeletalMeshComponent;
 class UCameraComponent;
 class UInputAction;
 class UInputMappingContext;
 struct FInputActionValue;
+
+class UInteractWidget;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
@@ -46,6 +49,9 @@ public:
 
 protected:
 	virtual void BeginPlay();
+
+	// RayCast
+	UPROPERTY(EditAnywhere) UInteractRaycast* InteractRaycast = nullptr;
 
 public:
 		
@@ -83,5 +89,16 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
-};
+	UFUNCTION() void SetCurrentInteractingActor(AActor* Interactable)
+	{
+		InteractingActor = Interactable;
+	}
 
+	// PlayerWidget
+	UPROPERTY(EditAnywhere) TSubclassOf<UInteractWidget> InteractWidgetTemplate;
+	UPROPERTY() UInteractWidget* InteractWidget = nullptr;
+
+private:
+
+	UPROPERTY(Transient, SkipSerialization) AActor* InteractingActor = nullptr;
+};

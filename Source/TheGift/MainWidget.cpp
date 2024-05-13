@@ -8,6 +8,6 @@ void UMainWidget::SetUp(ATheGiftCharacter* PlayerCharacter)
 	if (!PlayerCharacter)
 		return;
 
-	
-	InteractWidget->SetVisibility(ESlateVisibility::Hidden);
+	InteractWidget->SetUp(PlayerCharacter);
+	ModelViewerWidget->SetUp(PlayerCharacter);
 }

@@ -65,6 +65,7 @@ protected:
 
 	// RayCast
 	UPROPERTY(EditAnywhere) UInteractRaycast* InteractRaycast = nullptr;
+	UPROPERTY() APlayerController* PlayerController = nullptr;;
 
 public:
 		
@@ -97,6 +98,8 @@ public:
 	UPROPERTY(EditDefaultsOnly) FVector PeekRightOn = {};
 	UPROPERTY(EditDefaultsOnly) FVector PeekLeftOn = {};
 	UPROPERTY(EditDefaultsOnly) FVector PeekOff = {};
+
+	UPROPERTY(BlueprintReadWrite) bool IsInViewModel = false;
 
 protected:
 	/** Called for movement input */

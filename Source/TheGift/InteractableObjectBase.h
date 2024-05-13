@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "InteractableInterface.h"
+#include "TheGiftCharacter.h"
 #include "GameFramework/Actor.h"
 
 #include "InteractableObjectBase.generated.h"
@@ -15,13 +16,15 @@ class THEGIFT_API AInteractableObjectBase : public AActor, public IInteractableI
 
 	UPROPERTY(EditDefaultsOnly) USceneComponent* Root = nullptr;
 	UPROPERTY(EditDefaultsOnly) USceneComponent* Pivot = nullptr;
-	UPROPERTY(EditAnywhere) UStaticMeshComponent* BaseMesh = nullptr;
 
 public:	
 	// Sets default values for this actor's properties
 	AInteractableObjectBase();
 
 	UPROPERTY(VisibleAnywhere) bool CanInteract = true;
+	UPROPERTY(VisibleAnywhere) bool CanBeInspected = true;
+
+	UPROPERTY(EditAnywhere) UStaticMeshComponent* BaseMesh = nullptr;
 
 protected:
 	// Called when the game starts or when spawned
@@ -35,4 +38,13 @@ public:
 	virtual bool CanInteract_Implementation() override;
 
 	UFUNCTION() void OnActivate();
+
+	UFUNCTION() void SetPLayerCharacter(ATheGiftCharacter* playerCharacter)
+	{
+		PlayerCharacter = playerCharacter;
+	}
+
+private:
+
+	UPROPERTY(Transient, SkipSerialization) ATheGiftCharacter* PlayerCharacter = nullptr;
 };

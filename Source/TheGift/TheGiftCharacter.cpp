@@ -9,6 +9,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "InteractableInterface.h"
+#include "InteractableObjectBase.h"
 #include "InteractRaycast.h"
 #include "Blueprint/UserWidget.h"
 #include "Engine/LocalPlayer.h"
@@ -54,7 +55,7 @@ void ATheGiftCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	// Add Input Mapping Context
-	APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	PlayerController = Cast<APlayerController>(Controller);
 	
 	if (PlayerController)
 	{
@@ -105,6 +106,17 @@ void ATheGiftCharacter::Tick(float DeltaTime)
 		GetFirstPersonCameraComponent()->SetRelativeLocation(pos);
 		/*GetCharacterMovement()->MaxWalkSpeed = 600.f;*/
 	}
+
+	if(IsInViewModel)
+	{
+		float MouseX = 0.0f;
+		float MouseY = 0.0f;
+
+		PlayerController->GetInputMouseDelta(MouseX, MouseY);
+
+		UE_LOGFMT(LogTemp, Log, "Mouse position: {mx}, {my}", ("mx", MouseX), ("my", MouseY));
+		
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////// Input
@@ -145,7 +157,7 @@ void ATheGiftCharacter::Move(const FInputActionValue& Value)
 	// input is a Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
-	if (Controller != nullptr)
+	if (Controller != nullptr && !IsInViewModel)
 	{
 		// add movement 
 		AddMovementInput(GetActorForwardVector(), MovementVector.Y);
@@ -158,7 +170,7 @@ void ATheGiftCharacter::Look(const FInputActionValue& Value)
 	// input is a Vector2D
 	FVector2D LookAxisVector = Value.Get<FVector2D>();
 
-	if (Controller != nullptr)
+	if (Controller != nullptr && !IsInViewModel)
 	{
 		// add yaw and pitch input to controller
 		AddControllerYawInput(LookAxisVector.X);
@@ -172,10 +184,24 @@ void ATheGiftCharacter::Interact()
 
 	if (InteractingActor)
 	{
+		AInteractableObjectBase* InteractObject = Cast<AInteractableObjectBase>(InteractingActor);
 		if (IInteractableInterface::Execute_CanInteract(InteractingActor))
 		{
+			if(InteractObject)
+			{
+				UE_LOGFMT(LogTemp, Log, "ModelViewer");
+				InteractObject->SetPLayerCharacter(this);
+			}
+
 			IInteractableInterface::Execute_Interact(InteractingActor);
 			MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Hidden);
+		}
+		else
+		{
+			if(InteractObject)
+			{
+				//InteractObject->OnDe
+			}
 		}
 	}	
 }

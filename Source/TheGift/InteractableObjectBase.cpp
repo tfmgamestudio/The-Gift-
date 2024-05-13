@@ -2,6 +2,10 @@
 
 
 #include "InteractableObjectBase.h"
+
+#include "MainWidget.h"
+#include "ModelViewer.h"
+#include "Kismet/GameplayStatics.h"
 #include "Logging/StructuredLog.h"
 
 // Sets default values
@@ -25,21 +29,17 @@ AInteractableObjectBase::AInteractableObjectBase()
 void AInteractableObjectBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
 void AInteractableObjectBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void AInteractableObjectBase::Interact_Implementation()
 {
 	IInteractableInterface::Interact_Implementation();
-
-	
 
 	OnActivate();
 }
@@ -58,5 +58,20 @@ void AInteractableObjectBase::OnActivate()
 {
 	//CanInteract = false;
 	UE_LOGFMT(LogTemp, Log, "Interacting With Object");
+
+	if(CanBeInspected)
+	{
+		TArray<AActor*> FoundActors;
+		UGameplayStatics::GetAllActorsOfClass(GetWorld(), AModelViewer::StaticClass(), FoundActors);
+
+		for(auto* actor : FoundActors)
+		{
+			if(auto* foundActor = Cast<AModelViewer>(actor))
+				foundActor->SetMesh(this->BaseMesh);
+		}
+		PlayerCharacter->IsInViewModel = true;
+		PlayerCharacter->MainWidget->ModelViewerWidget->OnActivate();
+	}
+	//CanInteract = true;
 }
 

@@ -47,12 +47,21 @@ class ATheGiftCharacter : public ACharacter
 	/** Interact Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	UInputAction* InteractAction;
+
+	/** Peek Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* PeekRightAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* PeekLeftAction;
 	
 public:
 	ATheGiftCharacter();
 
 protected:
 	virtual void BeginPlay();
+
+	virtual void Tick(float DeltaTime) override;
 
 	// RayCast
 	UPROPERTY(EditAnywhere) UInteractRaycast* InteractRaycast = nullptr;
@@ -75,6 +84,20 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Weapon)
 	bool GetHasRifle();
 
+
+	bool LastPeek = false; //Right is true, Left is false
+	bool IsPeeking = false;
+
+	float PeekCounter = 0.f;
+	/*UPROPERTY(EditDefaultsOnly) float PeekingWalkingSpeed = 0.f;*/
+
+	UPROPERTY(EditDefaultsOnly) float PeekSpeed = 10.f;
+	UPROPERTY(EditDefaultsOnly)	FRuntimeFloatCurve AnimationCurve;
+
+	UPROPERTY(EditDefaultsOnly) FVector PeekRightOn = {};
+	UPROPERTY(EditDefaultsOnly) FVector PeekLeftOn = {};
+	UPROPERTY(EditDefaultsOnly) FVector PeekOff = {};
+
 protected:
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
@@ -82,7 +105,15 @@ protected:
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
 
+	/** Called for interact input */
 	void Interact();
+
+	/** Called for peeking input */
+	void PeekRight();
+
+	void PeekLeft();
+
+	void StopPeek();
 
 protected:
 	// APawn interface

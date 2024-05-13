@@ -72,6 +72,41 @@ void ATheGiftCharacter::BeginPlay()
 	}
 }
 
+void ATheGiftCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	PeekCounter += DeltaTime;
+	if (IsPeeking)
+	{
+
+		auto value = PeekCounter / ((PeekRightOn - PeekOff).Length() / PeekSpeed);
+
+		const auto eval = AnimationCurve.ExternalCurve
+			? AnimationCurve.ExternalCurve->GetFloatValue(value)
+			: AnimationCurve.EditorCurveData.Eval(value);
+
+		const auto pos = FMath::Lerp(PeekOff, LastPeek ? PeekRightOn : PeekLeftOn, eval);
+
+		GetFirstPersonCameraComponent()->SetRelativeLocation(pos);
+		/*GetCharacterMovement()->MaxWalkSpeed = PeekingWalkingSpeed;*/
+	}
+	if (!IsPeeking)
+	{
+
+		auto value = PeekCounter / ((GetFirstPersonCameraComponent()->GetRelativeLocation() - PeekOff).Length() / PeekSpeed);
+
+		const auto eval = AnimationCurve.ExternalCurve
+			? AnimationCurve.ExternalCurve->GetFloatValue(value)
+			: AnimationCurve.EditorCurveData.Eval(value);
+
+		const auto pos = FMath::Lerp(GetFirstPersonCameraComponent()->GetRelativeLocation(), PeekOff, eval);
+
+		GetFirstPersonCameraComponent()->SetRelativeLocation(pos);
+		/*GetCharacterMovement()->MaxWalkSpeed = 600.f;*/
+	}
+}
+
 //////////////////////////////////////////////////////////////////////////// Input
 
 void ATheGiftCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -91,6 +126,13 @@ void ATheGiftCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 		// Interacting
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &ATheGiftCharacter::Interact);
+
+		// Peeking
+		EnhancedInputComponent->BindAction(PeekRightAction, ETriggerEvent::Started, this, &ATheGiftCharacter::PeekRight);
+		EnhancedInputComponent->BindAction(PeekRightAction, ETriggerEvent::Completed, this, &ATheGiftCharacter::StopPeek);
+
+		EnhancedInputComponent->BindAction(PeekLeftAction, ETriggerEvent::Started, this, &ATheGiftCharacter::PeekLeft);
+		EnhancedInputComponent->BindAction(PeekLeftAction, ETriggerEvent::Completed, this, &ATheGiftCharacter::StopPeek);
 	}
 	else
 	{
@@ -136,6 +178,27 @@ void ATheGiftCharacter::Interact()
 			MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}	
+}
+
+void ATheGiftCharacter::PeekRight()
+{
+	PeekCounter = 0.f;
+	LastPeek = true;
+	IsPeeking = true;
+}
+
+
+void ATheGiftCharacter::PeekLeft()
+{
+	PeekCounter = 0.f;
+	LastPeek = false;
+	IsPeeking = true;
+}
+
+void ATheGiftCharacter::StopPeek()
+{
+	PeekCounter = 0.f;
+	IsPeeking = false;
 }
 
 void ATheGiftCharacter::SetHasRifle(bool bNewHasRifle)

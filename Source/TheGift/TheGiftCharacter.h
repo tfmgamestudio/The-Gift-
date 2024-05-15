@@ -135,7 +135,7 @@ public:
 	}
 
 	// Main Widget
-	UPROPERTY(EditAnywhere) TSubclassOf<UMainWidget> MainWidgetTemplate;
+	UPROPERTY(EditDefaultsOnly) TSubclassOf<UMainWidget> MainWidgetTemplate = nullptr;
 	UPROPERTY() UMainWidget* MainWidget = nullptr;
 
 private:

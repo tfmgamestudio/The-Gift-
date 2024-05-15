@@ -8,9 +8,9 @@
 
 #include "InteractWidget.generated.h"
 
-/**
- * 
- */
+class UImage;
+class UTextBlock;
+
 UCLASS()
 class THEGIFT_API UInteractWidget : public UUserWidget
 {
@@ -20,7 +20,7 @@ class THEGIFT_API UInteractWidget : public UUserWidget
 public:
 	void SetUp(ATheGiftCharacter* PlayerCharacter);
 
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UTextBlock* InteractText = nullptr;
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) class UImage* InteractImage = nullptr;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* InteractText = nullptr;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* InteractImage = nullptr;
 
 };

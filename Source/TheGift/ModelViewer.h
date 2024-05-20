@@ -28,13 +28,12 @@ class THEGIFT_API AModelViewer : public AActor
 	//{1868660, 0, 0 };
 	UPROPERTY(EditAnywhere) FRotator AddRotation = {0.1, 0.0, 0.0};
 
-	UPROPERTY(EditDefaultsOnly) UStaticMeshComponent* NewMesh = nullptr;
 
 public:	
 	// Sets default values for this actor's properties
 	AModelViewer();
 	
-	void SetMesh(UStaticMeshComponent* displayMesh);
+	void SetMesh(UStaticMesh* displayMesh);
 	void SetMaterialInstance(UMaterialInterface* displayMaterial);
 
 protected:

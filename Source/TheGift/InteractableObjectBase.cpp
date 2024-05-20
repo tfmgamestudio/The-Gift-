@@ -74,7 +74,7 @@ void AInteractableObjectBase::OnActivate()
 		{
 			if(auto* foundActor = Cast<AModelViewer>(actor))
 			{
-				foundActor->SetMesh(BaseMesh);
+				foundActor->SetMesh(BaseMesh->GetStaticMesh());
 				foundActor->SetMaterialInstance(BaseMaterial);
 			}
 		}

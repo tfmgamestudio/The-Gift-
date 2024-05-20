@@ -30,20 +30,16 @@ AModelViewer::AModelViewer()
 	PointLight2->SetupAttachment(Root);
 	PointLight3 = CreateDefaultSubobject<UPointLightComponent>(TEXT("PointLightCmp3"));
 	PointLight3->SetupAttachment(Root);
-
-	NewMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("NewMesh"));
-	NewMesh->SetupAttachment(Pivot);
 }
 
-void AModelViewer::SetMesh(UStaticMeshComponent* displayMesh)
+void AModelViewer::SetMesh(UStaticMesh* displayMesh)
 {
-	BaseMesh = NewMesh;
-	//BaseMesh->SetRelativeRotation(FRotator::ZeroRotator);
+	BaseMesh->SetStaticMesh(displayMesh);
 }
 
 void AModelViewer::SetMaterialInstance(UMaterialInterface* displayMaterial)
 {
-	//BaseMesh->SetMaterial(0, displayMaterial);
+	BaseMesh->SetMaterial(0, displayMaterial);
 }
 
 // Called when the game starts or when spawned
@@ -52,7 +48,7 @@ void AModelViewer::BeginPlay()
 	Super::BeginPlay();
 
 	// Sets the actor outside the Skybos so it wont be affected to those lights
-	//SetActorLocation(OutsideSkyBoxPos, false);
+	SetActorLocation(OutsideSkyBoxPos, false);
 }
 
 // Called every frame

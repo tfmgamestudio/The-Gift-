@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "TheGiftPlayerController.generated.h"
 
+class UMainWidget;
 class UInputMappingContext;
 
 /**
@@ -28,4 +29,9 @@ protected:
 	virtual void BeginPlay() override;
 
 	// End Actor interface
+
+public:
+	// Main Widget
+	UPROPERTY(EditDefaultsOnly) TSubclassOf<UMainWidget> MainWidgetTemplate = nullptr;
+	UPROPERTY() UMainWidget* MainWidget = nullptr;
 };

@@ -60,7 +60,7 @@ void UInteractRaycast::InteractRaycast(float DeltaTime)
 
 					if (IInteractableInterface::Execute_CanInteract(HitResult.GetActor()))
 					{
-						PlayerCharacter->MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Visible);
+						PlayerController->MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Visible);
 					}
 				}
 			}
@@ -69,14 +69,14 @@ void UInteractRaycast::InteractRaycast(float DeltaTime)
 				if (PlayerCharacter)
 				{
 					PlayerCharacter->SetCurrentInteractingActor(nullptr);
-					PlayerCharacter->MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Hidden);
+					PlayerController->MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Hidden);
 				}
 			}
 		}
 		else
 		{
 			PlayerCharacter->SetCurrentInteractingActor(nullptr);
-			PlayerCharacter->MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Hidden);
+			PlayerController->MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
 }

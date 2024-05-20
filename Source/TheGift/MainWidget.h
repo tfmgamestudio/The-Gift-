@@ -22,7 +22,7 @@ class THEGIFT_API UMainWidget : public UUserWidget
 
 public:
 	
-	void SetUp(ATheGiftCharacter* PlayerCharacter);
+	void SetUp();
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UUserWidget* FlashLightWidget = nullptr;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UUserWidget* StaminaBarWidget = nullptr;

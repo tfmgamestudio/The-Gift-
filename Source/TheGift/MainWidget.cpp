@@ -3,11 +3,8 @@
 
 #include "MainWidget.h"
 
-void UMainWidget::SetUp(ATheGiftCharacter* PlayerCharacter)
+void UMainWidget::SetUp()
 {
-	if (!PlayerCharacter)
-		return;
-
-	InteractWidget->SetUp(PlayerCharacter);
-	ModelViewerWidget->SetUp(PlayerCharacter);
+	InteractWidget->SetUp();
+	ModelViewerWidget->SetUp();
 }

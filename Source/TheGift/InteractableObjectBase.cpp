@@ -29,6 +29,11 @@ AInteractableObjectBase::AInteractableObjectBase()
 void AInteractableObjectBase::BeginPlay()
 {
 	Super::BeginPlay();
+
+	PlayerController = Cast<ATheGiftPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	PlayerCharacter = Cast<ATheGiftCharacter>(PlayerController->GetPawn());
+
+	BaseMaterial = BaseMesh->GetMaterial(0);
 }
 
 // Called every frame
@@ -61,16 +66,21 @@ void AInteractableObjectBase::OnActivate()
 
 	if(CanBeInspected)
 	{
+		// TODO Guardar en un puntero statico
 		TArray<AActor*> FoundActors;
 		UGameplayStatics::GetAllActorsOfClass(GetWorld(), AModelViewer::StaticClass(), FoundActors);
 
 		for(auto* actor : FoundActors)
 		{
 			if(auto* foundActor = Cast<AModelViewer>(actor))
-				foundActor->SetMesh(this->BaseMesh);
+			{
+				foundActor->SetMesh(BaseMesh);
+				foundActor->SetMaterialInstance(BaseMaterial);
+			}
 		}
+
 		PlayerCharacter->IsInViewModel = true;
-		PlayerCharacter->MainWidget->ModelViewerWidget->OnActivate();
+		PlayerController->MainWidget->ModelViewerWidget->OnActivate();
 	}
 	//CanInteract = true;
 }

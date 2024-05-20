@@ -5,15 +5,12 @@
 
 #include "Kismet/GameplayStatics.h"
 
-void UModelViewerWidget::SetUp(ATheGiftCharacter* playerCharacter)
-{
-	if (!playerCharacter)
-			return;
+void UModelViewerWidget::SetUp()
+{		
+	PlayerController = Cast<ATheGiftPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	PlayerCharacter = Cast<ATheGiftCharacter>(PlayerController->GetPawn());
 
-		PlayerCharacter = playerCharacter;
-		PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-
-		this->SetVisibility(ESlateVisibility::Hidden);
+	this->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UModelViewerWidget::OnActivate()

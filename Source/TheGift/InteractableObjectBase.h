@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "InteractableInterface.h"
 #include "TheGiftCharacter.h"
+#include "TheGiftPlayerController.h"
 #include "GameFramework/Actor.h"
 
 #include "InteractableObjectBase.generated.h"
@@ -25,6 +26,7 @@ public:
 	UPROPERTY(VisibleAnywhere) bool CanBeInspected = true;
 
 	UPROPERTY(EditAnywhere) UStaticMeshComponent* BaseMesh = nullptr;
+	UPROPERTY() UMaterialInterface* BaseMaterial = nullptr;
 
 protected:
 	// Called when the game starts or when spawned
@@ -39,12 +41,8 @@ public:
 
 	UFUNCTION() void OnActivate();
 
-	UFUNCTION() void SetPLayerCharacter(ATheGiftCharacter* playerCharacter)
-	{
-		PlayerCharacter = playerCharacter;
-	}
-
 private:
-
-	UPROPERTY(Transient, SkipSerialization) ATheGiftCharacter* PlayerCharacter = nullptr;
+	UPROPERTY() ATheGiftPlayerController* PlayerController = nullptr;
+	UPROPERTY() ATheGiftCharacter* PlayerCharacter = nullptr;
+	
 };

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "TheGiftPlayerController.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
 
@@ -48,6 +49,10 @@ class ATheGiftCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	UInputAction* InteractAction;
 
+	/** Click Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	UInputAction* ClickAction;
+
 	/** Peek Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* PeekRightAction;
@@ -65,7 +70,7 @@ protected:
 
 	// RayCast
 	UPROPERTY(EditAnywhere) UInteractRaycast* InteractRaycast = nullptr;
-	UPROPERTY() APlayerController* PlayerController = nullptr;;
+	UPROPERTY() ATheGiftPlayerController* PlayerController = nullptr;;
 
 public:
 		
@@ -111,6 +116,9 @@ protected:
 	/** Called for interact input */
 	void Interact();
 
+	/** Called for interact input */
+	void Click();
+
 	/** Called for peeking input */
 	void PeekRight();
 
@@ -134,11 +142,6 @@ public:
 		InteractingActor = Interactable;
 	}
 
-	// Main Widget
-	UPROPERTY(EditDefaultsOnly) TSubclassOf<UMainWidget> MainWidgetTemplate = nullptr;
-	UPROPERTY() UMainWidget* MainWidget = nullptr;
-
 private:
-
 	UPROPERTY(Transient, SkipSerialization) AActor* InteractingActor = nullptr;
 };

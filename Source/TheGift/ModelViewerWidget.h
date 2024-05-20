@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "TheGiftCharacter.h"
+#include "TheGiftPlayerController.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
@@ -20,10 +21,10 @@ class THEGIFT_API UModelViewerWidget : public UUserWidget
 
 	UPROPERTY() ATheGiftCharacter* PlayerCharacter;
 
-	UPROPERTY() APlayerController* PlayerController;
+	UPROPERTY() ATheGiftPlayerController* PlayerController;
 
 public:
-	void SetUp(ATheGiftCharacter* playerCharacter);
+	void SetUp();
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* RenderImage = nullptr;
 

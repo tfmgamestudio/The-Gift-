@@ -18,7 +18,7 @@ class THEGIFT_API UInteractWidget : public UUserWidget
 
 
 public:
-	void SetUp(ATheGiftCharacter* PlayerCharacter);
+	void SetUp();
 
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* InteractText = nullptr;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* InteractImage = nullptr;

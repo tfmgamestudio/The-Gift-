@@ -3,10 +3,7 @@
 
 #include "InteractWidget.h"
 
-void UInteractWidget::SetUp(ATheGiftCharacter* PlayerCharacter)
+void UInteractWidget::SetUp()
 {
-	if (!PlayerCharacter)
-		return;
-
 	this->SetVisibility(ESlateVisibility::Hidden);
 }

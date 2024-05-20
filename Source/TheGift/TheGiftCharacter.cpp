@@ -11,10 +11,10 @@
 #include "InteractableInterface.h"
 #include "InteractableObjectBase.h"
 #include "InteractRaycast.h"
+#include "MainWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "Engine/LocalPlayer.h"
 
-#include "MainWidget.h"
 #include "Logging/StructuredLog.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
@@ -55,22 +55,11 @@ void ATheGiftCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	// Add Input Mapping Context
-	PlayerController = Cast<APlayerController>(Controller);
+	PlayerController = Cast<ATheGiftPlayerController>(Controller);
 	
 	if (PlayerController)
-	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
-		{
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
-		}
-
-		if (MainWidgetTemplate)
-		{
-			MainWidget = CreateWidget<UMainWidget>(PlayerController, MainWidgetTemplate);
-			MainWidget->AddToViewport();
-			MainWidget->SetUp(this);
-		}
-	}
 }
 
 void ATheGiftCharacter::Tick(float DeltaTime)
@@ -139,6 +128,9 @@ void ATheGiftCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 		// Interacting
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &ATheGiftCharacter::Interact);
 
+		// Click
+		EnhancedInputComponent->BindAction(ClickAction, ETriggerEvent::Triggered, this, &ATheGiftCharacter::Click);
+
 		// Peeking
 		EnhancedInputComponent->BindAction(PeekRightAction, ETriggerEvent::Started, this, &ATheGiftCharacter::PeekRight);
 		EnhancedInputComponent->BindAction(PeekRightAction, ETriggerEvent::Completed, this, &ATheGiftCharacter::StopPeek);
@@ -184,26 +176,25 @@ void ATheGiftCharacter::Interact()
 
 	if (InteractingActor)
 	{
-		AInteractableObjectBase* InteractObject = Cast<AInteractableObjectBase>(InteractingActor);
 		if (IInteractableInterface::Execute_CanInteract(InteractingActor))
 		{
-			if(InteractObject)
-			{
-				UE_LOGFMT(LogTemp, Log, "ModelViewer");
-				InteractObject->SetPLayerCharacter(this);
-			}
-
 			IInteractableInterface::Execute_Interact(InteractingActor);
-			MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Hidden);
+
+			PlayerController->MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Hidden);
 		}
 		else
 		{
-			if(InteractObject)
-			{
-				//InteractObject->OnDe
-			}
+
 		}
 	}	
+}
+
+void ATheGiftCharacter::Click()
+{
+	if(IsInViewModel)
+	{
+		
+	}
 }
 
 void ATheGiftCharacter::PeekRight()

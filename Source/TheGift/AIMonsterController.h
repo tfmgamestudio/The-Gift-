@@ -21,9 +21,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void CheckNearbyEnemy();
-	void ResetShouldLookAround();
-	void OnLookAroundTimerComplete();
-
+	
 	UFUNCTION(BlueprintCallable)
 	EPathFollowingRequestResult::Type MoveToEnemy();
 
@@ -36,16 +34,5 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "AI")
 	bool HasSpawned = false;
 
-	UPROPERTY(BlueprintReadWrite)
-	bool bPlayerFound = false;
-	
-	UPROPERTY(BlueprintReadWrite)
-	bool bPlayerEnteredMultiSphere = false;
-	
-	UPROPERTY(BlueprintReadWrite)
-	bool bPlayerExitedMultiSphere = false;
 
-	FTimerHandle ShouldLookAroundTimerHandle;
-
-	float ShouldLookAroundDuration = 0.f;
 };

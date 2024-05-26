@@ -4,15 +4,16 @@
 #include "Waypoint.h"
 #include "Runtime/Engine/Public/EngineUtils.h"
 #include <Kismet/KismetSystemLibrary.h>
-#include <Kismet/GameplayStatics.h>
-
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Navigation/PathFollowingComponent.h"
 
 AAIMonsterController::AAIMonsterController()
 {
     BehaviorTreeComponent = CreateDefaultSubobject<UBehaviorTreeComponent>(TEXT("BehaviorTreeComponent"));
+
+    ShouldLookAroundDuration = 4.5f;
 }
 
 void AAIMonsterController::BeginPlay()
@@ -24,8 +25,6 @@ void AAIMonsterController::BeginPlay()
         RunBehaviorTree(BehaviorTree);
         HasSpawned = true;
         GetBlackboardComponent()->SetValueAsBool("HasSpawned", true);
-        UE_LOG(LogTemp, Log, TEXT("Behavior tree starting"));
-
     }
     else
     {
@@ -38,7 +37,6 @@ void AAIMonsterController::UpdateNextTargetPoint()
     if(HasSpawned)
     {
         UBlackboardComponent* pBlackboardComponent = BrainComponent->GetBlackboardComponent();
-
         int32 iTargetPointIndex = pBlackboardComponent->GetValueAsInt("TargetPointIndex");
 
         if (iTargetPointIndex >= 4)
@@ -50,7 +48,6 @@ void AAIMonsterController::UpdateNextTargetPoint()
         for (TActorIterator<AWaypoint> It(GetWorld()); It; ++It)
         {
             AWaypoint* pTargetPoint = *It;
-
             if (iTargetPointIndex == pTargetPoint->m_iPosition)
             {
                 pBlackboardComponent->SetValueAsVector("TargetPointPosition", pTargetPoint->GetActorLocation());
@@ -66,89 +63,145 @@ void AAIMonsterController::CheckNearbyEnemy()
 {
     if (HasSpawned)
     {
-        APawn* AIPawn = GetPawn();
-        ACharacter* PlayerCharacter = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-        
-        FVector SphereCastStart = AIPawn->GetActorLocation();
-        FVector SphereCastEnd = SphereCastStart + FVector(0, 0, 15.f); // Adjust as needed
+        APawn* pPawn = GetPawn();
 
-        // Perform sphere cast to detect nearby enemies
+        FVector MSStart = pPawn->GetActorLocation();
+        FVector MSEnd = MSStart + FVector(0, 0, 15.f);
+
         TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
         ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_Pawn));
 
         TArray<AActor*> ActorsToIgnore;
-        ActorsToIgnore.Add(AIPawn);
+        ActorsToIgnore.Add(pPawn);
 
-        TArray<FHitResult> SphereCastHits;
+        TArray<FHitResult> OutHits;
 
-        bool bSphereCastResult = UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(), SphereCastStart, SphereCastEnd, 1000.f, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForDuration, SphereCastHits, true);
+        bool bSphereResult = UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(), MSStart, MSEnd, 500.f, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForDuration, OutHits, true);
 
         UBlackboardComponent* BlackboardComponent = BrainComponent->GetBlackboardComponent();
 
-        if (bSphereCastResult)
+        if (bSphereResult)
         {
-            for (const FHitResult& SphereCastHit : SphereCastHits)
+            // Player is detected inside the multi-sphere
+            if (!bPlayerEnteredMultiSphere)
             {
-                if (SphereCastHit.GetActor() == PlayerCharacter)
+                UE_LOG(LogTemp, Log, TEXT("Player has entered the multi-sphere."));
+                bPlayerEnteredMultiSphere = true;
+                bPlayerExitedMultiSphere = false;
+            }
+
+            BlackboardComponent->SetValueAsBool("ShouldLookAround", false);
+
+            GetWorldTimerManager().ClearTimer(ShouldLookAroundTimerHandle);
+            
+            bPlayerFound = false;
+
+            for (const FHitResult& Hit : OutHits)
+            {
+                ACharacter* pCharacter = Cast<ACharacter>(Hit.GetActor());
+
+                if (pCharacter)
                 {
-                    FVector LineTraceStart = AIPawn->GetActorLocation();
-                    FVector LineTraceEnd = PlayerCharacter->GetCapsuleComponent()->GetComponentLocation();
+                    FVector LTStart = pPawn->GetActorLocation();
+                    FVector LTEnd = pCharacter->GetCapsuleComponent()->GetComponentLocation();
 
-                    FHitResult LineTraceHit;
-                    FCollisionQueryParams CollisionParams;
-                    CollisionParams.AddIgnoredActor(AIPawn);
+                    TArray<FHitResult> LineTraceHit;
+                    TArray<TEnumAsByte<EObjectTypeQuery>> LineObjectTypes;
 
-                    bool bLineTraceResult = GetWorld()->LineTraceSingleByChannel(LineTraceHit, LineTraceStart, LineTraceEnd, ECC_Pawn, CollisionParams);
+                    LineObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECC_WorldStatic));
 
-                    if (bLineTraceResult && LineTraceHit.GetActor() == PlayerCharacter)
+                    bool bLineTraceResult = UKismetSystemLibrary::LineTraceMultiForObjects(GetWorld(), LTStart, LTEnd, LineObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForDuration, LineTraceHit, true, FLinearColor::Red, FLinearColor::Green, 2.f);
+
+                    bool bIsObstructed = false;
+
+                    if (bLineTraceResult)
                     {
-                        BlackboardComponent->SetValueAsObject("TargetActorToFollow", PlayerCharacter);
+                        for (const FHitResult& LineHit : LineTraceHit)
+                        {
+                            if (LineHit.GetActor() != pCharacter)
+                            {
+                                bIsObstructed = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!bIsObstructed)
+                    {
+                        // Player is visible
+                        BlackboardComponent->SetValueAsObject("TargetActorToFollow", pCharacter);
                         UE_LOG(LogTemp, Log, TEXT("Player detected and visible, moving to enemy."));
                         MoveToEnemy();
-                        return; 
-                    }
-                    else
-                    {
-                        // Player not hit by line trace
-                        BlackboardComponent->SetValueAsObject("TargetActorToFollow", nullptr);
-                        UE_LOG(LogTemp, Log, TEXT("Player detected and not visible."));
+                        bPlayerFound = true;
                         break;
                     }
                 }
             }
         }
+        else
+        {
+            // Player is not detected inside the multi-sphere
+            if (bPlayerEnteredMultiSphere)
+            {
+                UE_LOG(LogTemp, Log, TEXT("Player has exited the multi-sphere."));
+                bPlayerEnteredMultiSphere = false;
+                bPlayerExitedMultiSphere = true;
+                BlackboardComponent->SetValueAsBool("ShouldLookAround", true);
+                BlackboardComponent->SetValueAsObject("TargetActorToFollow", nullptr);
 
-        // No player detected or not visible
-        BlackboardComponent->SetValueAsObject("TargetActorToFollow", nullptr);
-        UE_LOG(LogTemp, Log, TEXT("No nearby enemies detected or player not visible."));
+                GetCharacter()->GetCharacterMovement()->MaxWalkSpeed = 0.0f;
+                
+                GetWorldTimerManager().SetTimer(ShouldLookAroundTimerHandle, this, &AAIMonsterController::ResetShouldLookAround, ShouldLookAroundDuration, false);
+            }
+        }
+
+        // If the player was previously found but not found in this iteration, reset bPlayerFound
+        if (bPlayerFound && OutHits.Num() == 0)
+        {
+            bPlayerFound = false;
+        }
     }
 }
 
+void AAIMonsterController::ResetShouldLookAround()
+{
+    UBlackboardComponent* BlackboardComponent = BrainComponent->GetBlackboardComponent();
+    BlackboardComponent->SetValueAsBool("ShouldLookAround", false);
+
+    GetCharacter()->GetCharacterMovement()->MaxWalkSpeed = 200.f;
+}
 
 EPathFollowingRequestResult::Type AAIMonsterController::MoveToEnemy()
 {
     UBlackboardComponent* BlackboardComponent = BrainComponent->GetBlackboardComponent();
-
     AActor* HeroCharacterActor = Cast<AActor>(BlackboardComponent->GetValueAsObject("TargetActorToFollow"));
 
     if (!HeroCharacterActor)
     {
-        UE_LOG(LogTemp, Warning, TEXT("MoveToEnemy called but TargetActorToFollow is not set."));
+        // UE_LOG(LogTemp, Warning, TEXT("MoveToEnemy called but TargetActorToFollow is not set."));
         return EPathFollowingRequestResult::Type::Failed;
     }
 
-    UE_LOG(LogTemp, Log, TEXT("Attempting to move to actor: %s"), *HeroCharacterActor->GetName());
-
-    EPathFollowingRequestResult::Type MoveToActorResult = MoveToActor(HeroCharacterActor);
-
-    if (MoveToActorResult == EPathFollowingRequestResult::Type::RequestSuccessful)
+    if (BlackboardComponent->GetValueAsBool("ShouldLookAround"))
     {
-        UE_LOG(LogTemp, Log, TEXT("MoveToActor request successful."));
+        GetCharacter()->GetCharacterMovement()->MaxWalkSpeed = 0.0f;
     }
     else
     {
-        UE_LOG(LogTemp, Warning, TEXT("MoveToActor request failed."));
+        GetCharacter()->GetCharacterMovement()->MaxWalkSpeed = 200.f;
     }
+
+    // UE_LOG(LogTemp, Log, TEXT("Attempting to move to actor: %s"), *HeroCharacterActor->GetName());
+    EPathFollowingRequestResult::Type MoveToActorResult = MoveToActor(HeroCharacterActor);
+    //
+    // if (MoveToActorResult == EPathFollowingRequestResult::Type::RequestSuccessful)
+    // {
+    //     UE_LOG(LogTemp, Log, TEXT("MoveToActor request successful."));
+    // }
+    // else
+    // {
+    //     UE_LOG(LogTemp, Warning, TEXT("MoveToActor request failed."));
+    // }
 
     return MoveToActorResult;
 }

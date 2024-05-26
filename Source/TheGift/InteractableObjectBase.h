@@ -10,6 +10,8 @@
 
 #include "InteractableObjectBase.generated.h"
 
+class AModelViewer;
+
 UCLASS()
 class THEGIFT_API AInteractableObjectBase : public AActor, public IInteractableInterface
 {
@@ -27,6 +29,7 @@ public:
 
 	UPROPERTY(EditAnywhere) UStaticMeshComponent* BaseMesh = nullptr;
 	UPROPERTY() UMaterialInterface* BaseMaterial = nullptr;
+	UPROPERTY() AModelViewer* ModelViewerActor = nullptr;
 
 protected:
 	// Called when the game starts or when spawned

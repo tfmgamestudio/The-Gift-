@@ -51,8 +51,6 @@ void AInteractableObjectBase::Interact_Implementation()
 
 bool AInteractableObjectBase::CanInteract_Implementation()
 {
-	//return IInteractableInterface::CanInteract_Implementation();
-
 	if (CanInteract)
 		return true;
 	else
@@ -61,7 +59,7 @@ bool AInteractableObjectBase::CanInteract_Implementation()
 
 void AInteractableObjectBase::OnActivate()
 {
-	//CanInteract = false;
+	CanInteract = false;
 	UE_LOGFMT(LogTemp, Log, "Interacting With Object");
 
 	if(CanBeInspected)
@@ -74,14 +72,13 @@ void AInteractableObjectBase::OnActivate()
 		{
 			if(auto* foundActor = Cast<AModelViewer>(actor))	
 			{
-				foundActor->SetMesh(BaseMesh->GetStaticMesh());
-				foundActor->SetMaterialInstance(BaseMaterial);
+				ModelViewerActor = foundActor;
+				ModelViewerActor->SetMesh(BaseMesh->GetStaticMesh());
+				ModelViewerActor->SetMaterialInstance(BaseMaterial);
+				ModelViewerActor->Pivot->SetRelativeRotation(FRotator(0.0f, 0.0f, 0.0f));
 			}
 		}
-
 		PlayerCharacter->IsInViewModel = true;
 		PlayerController->MainWidget->ModelViewerWidget->OnActivate();
 	}
-	//CanInteract = true;
 }
-

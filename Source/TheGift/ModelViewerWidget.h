@@ -31,5 +31,5 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UButton* BackButton = nullptr;
 
 	void OnActivate();
-	void OnDeactivate();
+	UFUNCTION(BlueprintCallable) void OnDeactivate();
 };

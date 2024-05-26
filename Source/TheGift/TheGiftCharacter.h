@@ -53,13 +53,17 @@ class ATheGiftCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	UInputAction* ClickAction;
 
+	/** Crouch Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	UInputAction* CrouchAction;
+
 	/** Peek Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* PeekRightAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* PeekLeftAction;
-	
+
 public:
 	ATheGiftCharacter();
 
@@ -106,6 +110,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite) bool IsInViewModel = false;
 
+	UPROPERTY(BlueprintReadWrite) bool IsClicked = false;
+	UPROPERTY(BlueprintReadWrite) float RotationSpeed = 2.0f;
+
 protected:
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
@@ -116,14 +123,17 @@ protected:
 	/** Called for interact input */
 	void Interact();
 
-	/** Called for interact input */
-	void Click();
+	/** Called for clicking input */
+	void ClickStart();
+	void ClickEnd();
+	
+	/** Called for crouching input */
+	void CrouchStart();
+	void CrouchEnd();
 
 	/** Called for peeking input */
 	void PeekRight();
-
 	void PeekLeft();
-
 	void StopPeek();
 
 protected:
@@ -141,6 +151,7 @@ public:
 	{
 		InteractingActor = Interactable;
 	}
+	UFUNCTION() AActor* GetInteractingActor() { return InteractingActor;} 
 
 private:
 	UPROPERTY(Transient, SkipSerialization) AActor* InteractingActor = nullptr;

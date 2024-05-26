@@ -3,6 +3,7 @@
 
 #include "ModelViewerWidget.h"
 
+#include "InteractableObjectBase.h"
 #include "Kismet/GameplayStatics.h"
 
 void UModelViewerWidget::SetUp()
@@ -25,4 +26,5 @@ void UModelViewerWidget::OnDeactivate()
 	this->SetVisibility(ESlateVisibility::Hidden);
 	PlayerController->SetShowMouseCursor(false);
 	PlayerCharacter->IsInViewModel = false;
+	Cast<AInteractableObjectBase>(PlayerCharacter->GetInteractingActor())->CanInteract = true;
 }

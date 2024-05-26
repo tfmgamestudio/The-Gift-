@@ -56,6 +56,6 @@ void AModelViewer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	Pivot->SetRelativeRotation(Pivot->GetComponentRotation() + AddRotation, false);
+	//Pivot->SetRelativeRotation(Pivot->GetComponentRotation() + AddRotation, false);
 }
 

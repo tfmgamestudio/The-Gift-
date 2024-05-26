@@ -12,6 +12,7 @@
 #include "InteractableObjectBase.h"
 #include "InteractRaycast.h"
 #include "MainWidget.h"
+#include "ModelViewer.h"
 #include "Blueprint/UserWidget.h"
 #include "Engine/LocalPlayer.h"
 
@@ -98,13 +99,16 @@ void ATheGiftCharacter::Tick(float DeltaTime)
 
 	if(IsInViewModel)
 	{
-		float MouseX = 0.0f;
-		float MouseY = 0.0f;
+		if(IsClicked)
+		{
+			float MouseX = 0.0f;
+			float MouseY = 0.0f;
 
-		PlayerController->GetInputMouseDelta(MouseX, MouseY);
+			PlayerController->GetInputMouseDelta(MouseX, MouseY);
+			//UE_LOGFMT(LogTemp, Log, "Mouse position: {mx}, {my}", ("mx", MouseX), ("my", MouseY));
 
-		UE_LOGFMT(LogTemp, Log, "Mouse position: {mx}, {my}", ("mx", MouseX), ("my", MouseY));
-		
+			Cast<AInteractableObjectBase>(InteractingActor)->ModelViewerActor->Pivot->AddWorldRotation(FRotator(- MouseY * RotationSpeed, 0.f, MouseX * RotationSpeed));
+		}
 	}
 }
 
@@ -129,7 +133,12 @@ void ATheGiftCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &ATheGiftCharacter::Interact);
 
 		// Click
-		EnhancedInputComponent->BindAction(ClickAction, ETriggerEvent::Triggered, this, &ATheGiftCharacter::Click);
+		EnhancedInputComponent->BindAction(ClickAction, ETriggerEvent::Started, this, &ATheGiftCharacter::ClickStart);
+		EnhancedInputComponent->BindAction(ClickAction, ETriggerEvent::Completed, this, &ATheGiftCharacter::ClickEnd);
+
+		// Crouch
+		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &ATheGiftCharacter::CrouchStart);
+		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Completed, this, &ATheGiftCharacter::CrouchEnd);
 
 		// Peeking
 		EnhancedInputComponent->BindAction(PeekRightAction, ETriggerEvent::Started, this, &ATheGiftCharacter::PeekRight);
@@ -189,12 +198,31 @@ void ATheGiftCharacter::Interact()
 	}	
 }
 
-void ATheGiftCharacter::Click()
+void ATheGiftCharacter::ClickStart()
 {
 	if(IsInViewModel)
 	{
-		
+		IsClicked = true;
 	}
+}
+
+void ATheGiftCharacter::ClickEnd()
+{
+	if(IsInViewModel)
+	{
+		IsClicked = false;
+	}
+}
+
+void ATheGiftCharacter::CrouchStart()
+{
+	if(CanJump())
+		ACharacter::Crouch(false);
+}
+
+void ATheGiftCharacter::CrouchEnd()
+{
+	ACharacter::UnCrouch(false);
 }
 
 void ATheGiftCharacter::PeekRight()
@@ -203,7 +231,6 @@ void ATheGiftCharacter::PeekRight()
 	LastPeek = true;
 	IsPeeking = true;
 }
-
 
 void ATheGiftCharacter::PeekLeft()
 {

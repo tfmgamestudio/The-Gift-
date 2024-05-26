@@ -16,7 +16,7 @@ class THEGIFT_API AModelViewer : public AActor
 	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly) USceneComponent* Root = nullptr;
-	UPROPERTY(EditDefaultsOnly) USceneComponent* Pivot = nullptr;
+	
 	UPROPERTY(EditAnywhere) UStaticMeshComponent* BaseMesh = nullptr;
 	UPROPERTY(EditAnywhere) USceneCaptureComponent2D* CaptureComponent2D = nullptr;
 
@@ -43,4 +43,6 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UPROPERTY(EditDefaultsOnly) USceneComponent* Pivot = nullptr;
 };

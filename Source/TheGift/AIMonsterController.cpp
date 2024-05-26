@@ -79,7 +79,7 @@ void AAIMonsterController::CheckNearbyEnemy()
         bool bSphereResult = UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(), MSStart, MSEnd, 500.f, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForDuration, OutHits, true);
 
         UBlackboardComponent* BlackboardComponent = BrainComponent->GetBlackboardComponent();
-
+        
         if (bSphereResult)
         {
             // Player is detected inside the multi-sphere
@@ -130,6 +130,16 @@ void AAIMonsterController::CheckNearbyEnemy()
                     {
                         // Player is visible
                         BlackboardComponent->SetValueAsObject("TargetActorToFollow", pCharacter);
+
+                        float Distance = FVector::Dist(pPawn->GetActorLocation(), pCharacter->GetCapsuleComponent()->GetComponentLocation());
+                        
+                        UE_LOG(LogTemp, Log, TEXT("Distance to enemy: %f"), Distance);
+                        
+                        if(Distance < 100.f)
+                            BlackboardComponent->SetValueAsBool("Attack", true);
+                        else
+                            BlackboardComponent->SetValueAsBool("Attack", false);
+                        
                         UE_LOG(LogTemp, Log, TEXT("Player detected and visible, moving to enemy."));
                         MoveToEnemy();
                         bPlayerFound = true;
@@ -175,13 +185,12 @@ EPathFollowingRequestResult::Type AAIMonsterController::MoveToEnemy()
 {
     UBlackboardComponent* BlackboardComponent = BrainComponent->GetBlackboardComponent();
     AActor* HeroCharacterActor = Cast<AActor>(BlackboardComponent->GetValueAsObject("TargetActorToFollow"));
-
+    
     if (!HeroCharacterActor)
     {
-        // UE_LOG(LogTemp, Warning, TEXT("MoveToEnemy called but TargetActorToFollow is not set."));
-        return EPathFollowingRequestResult::Type::Failed;
+        return EPathFollowingRequestResult::Failed;
     }
-
+    
     if (BlackboardComponent->GetValueAsBool("ShouldLookAround"))
     {
         GetCharacter()->GetCharacterMovement()->MaxWalkSpeed = 0.0f;
@@ -191,17 +200,18 @@ EPathFollowingRequestResult::Type AAIMonsterController::MoveToEnemy()
         GetCharacter()->GetCharacterMovement()->MaxWalkSpeed = 200.f;
     }
 
-    // UE_LOG(LogTemp, Log, TEXT("Attempting to move to actor: %s"), *HeroCharacterActor->GetName());
+    bool bAttack = BlackboardComponent->GetValueAsBool("Attack");
+
+    if (bAttack)
+    {
+        GetCharacter()->GetCharacterMovement()->MaxWalkSpeed = 0.0f;
+    }
+    else
+    {
+        GetCharacter()->GetCharacterMovement()->MaxWalkSpeed = 200.f;
+    }
+
     EPathFollowingRequestResult::Type MoveToActorResult = MoveToActor(HeroCharacterActor);
-    //
-    // if (MoveToActorResult == EPathFollowingRequestResult::Type::RequestSuccessful)
-    // {
-    //     UE_LOG(LogTemp, Log, TEXT("MoveToActor request successful."));
-    // }
-    // else
-    // {
-    //     UE_LOG(LogTemp, Warning, TEXT("MoveToActor request failed."));
-    // }
 
     return MoveToActorResult;
 }

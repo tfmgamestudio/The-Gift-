@@ -120,8 +120,8 @@ void ATheGiftCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		// Jumping
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+		EnhancedInputComponent->BindAction(HideAction, ETriggerEvent::Started, this, &ATheGiftCharacter::Hide);
+		EnhancedInputComponent->BindAction(HideAction, ETriggerEvent::Completed, this, &ATheGiftCharacter::StopHiding);
 
 		// Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATheGiftCharacter::Move);
@@ -239,6 +239,16 @@ void ATheGiftCharacter::StopPeek()
 {
 	PeekCounter = 0.f;
 	IsPeeking = false;
+}
+
+void ATheGiftCharacter::Hide()
+{
+
+}
+
+void ATheGiftCharacter::StopHiding()
+{
+
 }
 
 void ATheGiftCharacter::SetHasRifle(bool bNewHasRifle)

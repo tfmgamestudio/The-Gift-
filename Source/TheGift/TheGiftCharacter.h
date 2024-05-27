@@ -39,7 +39,7 @@ class ATheGiftCharacter : public ACharacter
 
 	/** Jump Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
-	UInputAction* JumpAction;
+	UInputAction* HideAction;
 
 	/** Move Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
@@ -135,6 +135,10 @@ protected:
 	void PeekRight();
 	void PeekLeft();
 	void StopPeek();
+
+	/** Called for hide input */
+	void Hide();
+	void StopHiding();
 
 protected:
 	// APawn interface

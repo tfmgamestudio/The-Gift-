@@ -17,7 +17,6 @@ class THEGIFT_API AModelViewer : public AActor
 
 	UPROPERTY(EditDefaultsOnly) USceneComponent* Root = nullptr;
 	
-	UPROPERTY(EditAnywhere) UStaticMeshComponent* BaseMesh = nullptr;
 	UPROPERTY(EditAnywhere) USceneCaptureComponent2D* CaptureComponent2D = nullptr;
 
 	UPROPERTY(EditAnywhere) UPointLightComponent* PointLight1 = nullptr;
@@ -45,4 +44,5 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditDefaultsOnly) USceneComponent* Pivot = nullptr;
+	UPROPERTY(EditAnywhere) UStaticMeshComponent* BaseMesh = nullptr;
 };

@@ -107,7 +107,7 @@ void ATheGiftCharacter::Tick(float DeltaTime)
 			PlayerController->GetInputMouseDelta(MouseX, MouseY);
 			//UE_LOGFMT(LogTemp, Log, "Mouse position: {mx}, {my}", ("mx", MouseX), ("my", MouseY));
 
-			Cast<AInteractableObjectBase>(InteractingActor)->ModelViewerActor->Pivot->AddWorldRotation(FRotator(- MouseY * RotationSpeed, 0.f, MouseX * RotationSpeed));
+			Cast<AInteractableObjectBase>(InteractingActor)->ModelViewerActor->Pivot->AddWorldRotation(FRotator(- MouseY * RotationSpeed, - MouseX * RotationSpeed, 0.f));
 		}
 	}
 }
@@ -190,10 +190,6 @@ void ATheGiftCharacter::Interact()
 			IInteractableInterface::Execute_Interact(InteractingActor);
 
 			PlayerController->MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Hidden);
-		}
-		else
-		{
-
 		}
 	}	
 }

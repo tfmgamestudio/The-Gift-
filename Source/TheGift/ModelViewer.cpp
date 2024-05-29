@@ -42,6 +42,11 @@ void AModelViewer::SetMaterialInstance(UMaterialInterface* displayMaterial)
 	BaseMesh->SetMaterial(0, displayMaterial);
 }
 
+void AModelViewer::SetScale(FVector newScale)
+{
+	BaseMesh->SetRelativeScale3D(newScale);
+}
+
 // Called when the game starts or when spawned
 void AModelViewer::BeginPlay()
 {

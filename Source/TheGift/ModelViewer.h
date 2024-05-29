@@ -34,6 +34,7 @@ public:
 	
 	void SetMesh(UStaticMesh* displayMesh);
 	void SetMaterialInstance(UMaterialInterface* displayMaterial);
+	void SetScale(FVector newScale);
 
 protected:
 	// Called when the game starts or when spawned

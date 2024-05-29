@@ -30,6 +30,7 @@ public:
 	UPROPERTY(EditAnywhere) UStaticMeshComponent* BaseMesh = nullptr;
 	UPROPERTY() UMaterialInterface* BaseMaterial = nullptr;
 	UPROPERTY() AModelViewer* ModelViewerActor = nullptr;
+	UPROPERTY(EditInstanceOnly) FVector ModelViewerScale = {1.0f, 1.0f, 1.0f};
 
 protected:
 	// Called when the game starts or when spawned

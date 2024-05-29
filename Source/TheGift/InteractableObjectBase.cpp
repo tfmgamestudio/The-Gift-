@@ -75,6 +75,7 @@ void AInteractableObjectBase::OnActivate()
 				ModelViewerActor = foundActor;
 				ModelViewerActor->SetMesh(BaseMesh->GetStaticMesh());
 				ModelViewerActor->SetMaterialInstance(BaseMaterial);
+				ModelViewerActor->SetScale(ModelViewerScale);
 				ModelViewerActor->Pivot->SetRelativeRotation(FRotator(0.0f, 0.0f, 0.0f));
 			}
 		}

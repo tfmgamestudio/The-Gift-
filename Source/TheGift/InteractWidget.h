@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "TheGiftCharacter.h"
 #include "Blueprint/UserWidget.h"
 
 #include "InteractWidget.generated.h"

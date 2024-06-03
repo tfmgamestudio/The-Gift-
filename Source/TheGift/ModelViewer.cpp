@@ -47,6 +47,11 @@ void AModelViewer::SetScale(FVector newScale)
 	BaseMesh->SetRelativeScale3D(newScale);
 }
 
+void AModelViewer::SetRelativePosition(FVector newOffset)
+{
+	BaseMesh->SetRelativeLocation(newOffset);
+}
+
 // Called when the game starts or when spawned
 void AModelViewer::BeginPlay()
 {
@@ -60,7 +65,5 @@ void AModelViewer::BeginPlay()
 void AModelViewer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	//Pivot->SetRelativeRotation(Pivot->GetComponentRotation() + AddRotation, false);
 }
 

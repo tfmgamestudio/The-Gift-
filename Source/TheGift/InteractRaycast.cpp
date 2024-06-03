@@ -3,6 +3,7 @@
 
 #include "InteractRaycast.h"
 
+#include "InteractableDoorBase.h"
 #include "InteractableInterface.h"
 #include "InteractWidget.h"
 #include "MainWidget.h"
@@ -60,7 +61,16 @@ void UInteractRaycast::InteractRaycast(float DeltaTime)
 
 					if (IInteractableInterface::Execute_CanInteract(HitResult.GetActor()))
 					{
-						PlayerController->MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Visible);
+						if(Cast<AInteractableDoorBase>(HitResult.GetActor()))
+							PlayerController->MainWidget->InteractDoorWidget->SetVisibility(ESlateVisibility::Visible);
+						else
+							PlayerController->MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Visible);
+					}
+					else
+					{
+						if(Cast<AInteractableDoorBase>(HitResult.GetActor()))
+							if(Cast<AInteractableDoorBase>(HitResult.GetActor())->IsOpen == true)
+								PlayerController->MainWidget->InteractDoorWidget->SetVisibility(ESlateVisibility::Visible);
 					}
 				}
 			}
@@ -69,6 +79,7 @@ void UInteractRaycast::InteractRaycast(float DeltaTime)
 				if (PlayerCharacter)
 				{
 					PlayerCharacter->SetCurrentInteractingActor(nullptr);
+					PlayerController->MainWidget->InteractDoorWidget->SetVisibility(ESlateVisibility::Hidden);
 					PlayerController->MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Hidden);
 				}
 			}
@@ -76,6 +87,7 @@ void UInteractRaycast::InteractRaycast(float DeltaTime)
 		else
 		{
 			PlayerCharacter->SetCurrentInteractingActor(nullptr);
+			PlayerController->MainWidget->InteractDoorWidget->SetVisibility(ESlateVisibility::Hidden);
 			PlayerController->MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}

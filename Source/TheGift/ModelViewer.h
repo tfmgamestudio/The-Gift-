@@ -23,10 +23,7 @@ class THEGIFT_API AModelViewer : public AActor
 	UPROPERTY(EditAnywhere) UPointLightComponent* PointLight2 = nullptr;
 	UPROPERTY(EditAnywhere) UPointLightComponent* PointLight3 = nullptr;
 
-	UPROPERTY(EditAnywhere) FVector OutsideSkyBoxPos = {1868660, 0, 0 };
-	//{1868660, 0, 0 };
-	UPROPERTY(EditAnywhere) FRotator AddRotation = {0.1, 0.0, 0.0};
-
+	UPROPERTY(EditAnywhere) FVector OutsideSkyBoxPos = {1868660, 0, 0 }; // {1868660, 0, 0 };
 
 public:	
 	// Sets default values for this actor's properties
@@ -35,6 +32,7 @@ public:
 	void SetMesh(UStaticMesh* displayMesh);
 	void SetMaterialInstance(UMaterialInterface* displayMaterial);
 	void SetScale(FVector newScale);
+	void SetRelativePosition(FVector newOffset);
 
 protected:
 	// Called when the game starts or when spawned

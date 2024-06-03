@@ -8,6 +8,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "InteractableDoorBase.h"
 #include "InteractableInterface.h"
 #include "InteractableObjectBase.h"
 #include "InteractRaycast.h"
@@ -187,7 +188,8 @@ void ATheGiftCharacter::Interact()
 	{
 		if (IInteractableInterface::Execute_CanInteract(InteractingActor))
 		{
-			IInteractableInterface::Execute_Interact(InteractingActor);
+			if(!Cast<AInteractableDoorBase>(InteractingActor))
+				IInteractableInterface::Execute_Interact(InteractingActor);
 
 			PlayerController->MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Hidden);
 		}
@@ -243,12 +245,28 @@ void ATheGiftCharacter::StopPeek()
 
 void ATheGiftCharacter::Hide()
 {
+	UE_LOGFMT(LogTemp, Log, "Hide/ForceDoor Pressed");
 
+	if (InteractingActor)
+	{
+		if (IInteractableInterface::Execute_CanInteract(InteractingActor))
+		{
+			if(Cast<AInteractableDoorBase>(InteractingActor))
+				IInteractableInterface::Execute_Interact(InteractingActor);
+
+			PlayerController->MainWidget->InteractDoorWidget->SetVisibility(ESlateVisibility::Hidden);
+		}
+	}
 }
 
 void ATheGiftCharacter::StopHiding()
 {
-
+	/*if(InteractingActor)
+		if(Cast<AInteractableDoorBase>(InteractingActor))
+		{
+			Cast<AInteractableDoorBase>(InteractingActor)->CanInteract = true;
+			PlayerController->MainWidget->InteractDoorWidget->SetVisibility(ESlateVisibility::Visible);
+		}*/
 }
 
 void ATheGiftCharacter::SetHasRifle(bool bNewHasRifle)

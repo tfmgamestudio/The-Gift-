@@ -20,8 +20,11 @@ AInteractableDoorBase::AInteractableDoorBase()
 	Pivot = CreateDefaultSubobject<USceneComponent>(TEXT("Pivot"));
 	Pivot->SetupAttachment(Root);
 
+	BaseFrame = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Frame"));
+	BaseFrame->SetupAttachment(Root);
+
 	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	BaseMesh->SetupAttachment(Root);
+	BaseMesh->SetupAttachment(Pivot);
 }
 
 // Called when the game starts or when spawned
@@ -43,6 +46,10 @@ void AInteractableDoorBase::Interact_Implementation()
 {
 	IInteractableInterface::Interact_Implementation();
 
+	if(!IsOpen)
+		OnActivate();
+	else
+		OnDeactivate();
 }
 
 bool AInteractableDoorBase::CanInteract_Implementation()
@@ -55,6 +62,16 @@ bool AInteractableDoorBase::CanInteract_Implementation()
 
 void AInteractableDoorBase::OnActivate()
 {
-	CanInteract = false;
-
+	//CanInteract = false;
+	IsOpen = true;
+	BaseMesh->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
 }
+
+void AInteractableDoorBase::OnDeactivate()
+{
+	//CanInteract = true;
+	IsOpen = false;
+	BaseMesh->SetRelativeRotation(FRotator(0.0f, 0.0f, 0.0f));
+}
+
+

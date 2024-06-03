@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InteractDoorWidget.h"
 #include "InteractWidget.h"
 #include "ModelViewerWidget.h"
 #include "TheGiftCharacter.h"
@@ -27,5 +28,6 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UUserWidget* FlashLightWidget = nullptr;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UUserWidget* StaminaBarWidget = nullptr;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UInteractWidget* InteractWidget = nullptr;
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UInteractDoorWidget* InteractDoorWidget = nullptr;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UModelViewerWidget* ModelViewerWidget = nullptr;
 };

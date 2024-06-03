@@ -22,7 +22,7 @@ AInteractableObjectBase::AInteractableObjectBase()
 	Pivot->SetupAttachment(Root);
 
 	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	BaseMesh->SetupAttachment(Root);
+	BaseMesh->SetupAttachment(Pivot);
 }
 
 // Called when the game starts or when spawned
@@ -76,7 +76,8 @@ void AInteractableObjectBase::OnActivate()
 				ModelViewerActor->SetMesh(BaseMesh->GetStaticMesh());
 				ModelViewerActor->SetMaterialInstance(BaseMaterial);
 				ModelViewerActor->SetScale(ModelViewerScale);
-				ModelViewerActor->Pivot->SetRelativeRotation(FRotator(0.0f, 0.0f, 0.0f));
+				ModelViewerActor->Pivot->SetRelativeRotation(ObjectRotation);
+				ModelViewerActor->SetRelativePosition(ObjectOffset);
 			}
 		}
 		PlayerCharacter->IsInViewModel = true;

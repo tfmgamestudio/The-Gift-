@@ -19,12 +19,15 @@ class THEGIFT_API AInteractableDoorBase : public AActor, public IInteractableInt
 	UPROPERTY(EditDefaultsOnly) USceneComponent* Root = nullptr;
 	UPROPERTY(EditDefaultsOnly) USceneComponent* Pivot = nullptr;
 	UPROPERTY(EditAnywhere) UStaticMeshComponent* BaseMesh = nullptr;
+	UPROPERTY(EditAnywhere) UStaticMeshComponent* BaseFrame = nullptr;
 
 public:	
 	// Sets default values for this actor's properties
 	AInteractableDoorBase();
 	
 	UPROPERTY(VisibleAnywhere) bool CanInteract = true;
+	
+	bool IsOpen = false;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -37,6 +40,7 @@ public:
 	virtual bool CanInteract_Implementation() override;
 
 	UFUNCTION() void OnActivate();
+	UFUNCTION() void OnDeactivate();
 private:
 	UPROPERTY() ATheGiftPlayerController* PlayerController = nullptr;
 	UPROPERTY() ATheGiftCharacter* PlayerCharacter = nullptr;

@@ -76,7 +76,7 @@ void AAIMonsterController::CheckNearbyEnemy()
 
         TArray<FHitResult> OutHits;
 
-        bool bSphereResult = UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(), MSStart, MSEnd, 500.f, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::ForDuration, OutHits, true);
+        bool bSphereResult = UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(), MSStart, MSEnd, 500.f, ObjectTypes, false, ActorsToIgnore, EDrawDebugTrace::None, OutHits, true);
 
         UBlackboardComponent* BlackboardComponent = BrainComponent->GetBlackboardComponent();
         

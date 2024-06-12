@@ -79,28 +79,26 @@ void ATheGiftCharacter::Tick(float DeltaTime)
 
 		auto value = PeekCounter / ((PeekRightOn - PeekOff).Length() / PeekSpeed);
 
-		const auto eval = AnimationCurve.ExternalCurve
-			? AnimationCurve.ExternalCurve->GetFloatValue(value)
-			: AnimationCurve.EditorCurveData.Eval(value);
+		const auto eval = PeekAnimCurve.ExternalCurve
+			? PeekAnimCurve.ExternalCurve->GetFloatValue(value)
+			: PeekAnimCurve.EditorCurveData.Eval(value);
 
 		const auto pos = FMath::Lerp(PeekOff, LastPeek ? PeekRightOn : PeekLeftOn, eval);
 
 		GetFirstPersonCameraComponent()->SetRelativeLocation(pos);
-		/*GetCharacterMovement()->MaxWalkSpeed = PeekingWalkingSpeed;*/
 	}
 	if (!IsPeeking)
 	{
 
 		auto value = PeekCounter / ((GetFirstPersonCameraComponent()->GetRelativeLocation() - PeekOff).Length() / PeekSpeed);
 
-		const auto eval = AnimationCurve.ExternalCurve
-			? AnimationCurve.ExternalCurve->GetFloatValue(value)
-			: AnimationCurve.EditorCurveData.Eval(value);
+		const auto eval = PeekAnimCurve.ExternalCurve
+			? PeekAnimCurve.ExternalCurve->GetFloatValue(value)
+			: PeekAnimCurve.EditorCurveData.Eval(value);
 
 		const auto pos = FMath::Lerp(GetFirstPersonCameraComponent()->GetRelativeLocation(), PeekOff, eval);
 
 		GetFirstPersonCameraComponent()->SetRelativeLocation(pos);
-		/*GetCharacterMovement()->MaxWalkSpeed = 600.f;*/
 	}
 
 	if (IsCrouching)

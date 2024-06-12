@@ -105,7 +105,7 @@ public:
 	/*UPROPERTY(EditDefaultsOnly) float PeekingWalkingSpeed = 0.f;*/
 
 	UPROPERTY(EditDefaultsOnly) float PeekSpeed = 10.f;
-	UPROPERTY(EditDefaultsOnly)	FRuntimeFloatCurve AnimationCurve;
+	UPROPERTY(EditDefaultsOnly)	FRuntimeFloatCurve PeekAnimCurve;
 
 	UPROPERTY(EditDefaultsOnly) FVector PeekRightOn = {};
 	UPROPERTY(EditDefaultsOnly) FVector PeekLeftOn = {};

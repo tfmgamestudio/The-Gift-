@@ -111,6 +111,18 @@ public:
 	UPROPERTY(EditDefaultsOnly) FVector PeekLeftOn = {};
 	UPROPERTY(EditDefaultsOnly) FVector PeekOff = {};
 
+
+	bool IsCrouching = false;
+
+	float CrouchCounter = 0.f;
+
+	UPROPERTY(EditDefaultsOnly) float CrouchSpeed = 10.f;
+	UPROPERTY(EditDefaultsOnly)	FRuntimeFloatCurve CrouchAnimCurve;
+
+	UPROPERTY(EditDefaultsOnly) FVector CrouchOn = {};
+	UPROPERTY(EditDefaultsOnly) FVector CrouchOff = {};
+
+
 	UPROPERTY(BlueprintReadWrite) bool IsInViewModel = false;
 
 	UPROPERTY(BlueprintReadWrite) bool IsClicked = false;

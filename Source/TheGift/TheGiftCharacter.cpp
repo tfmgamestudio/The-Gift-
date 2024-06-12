@@ -73,6 +73,7 @@ void ATheGiftCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	PeekCounter += DeltaTime;
+	CrouchCounter += DeltaTime;
 	if (IsPeeking)
 	{
 
@@ -100,6 +101,33 @@ void ATheGiftCharacter::Tick(float DeltaTime)
 
 		GetFirstPersonCameraComponent()->SetRelativeLocation(pos);
 		/*GetCharacterMovement()->MaxWalkSpeed = 600.f;*/
+	}
+
+	if (IsCrouching)
+	{
+
+		auto crouchValue = CrouchCounter / ((CrouchOn - CrouchOff).Length() / CrouchSpeed);
+
+		const auto crouchEval = CrouchAnimCurve.ExternalCurve
+			? CrouchAnimCurve.ExternalCurve->GetFloatValue(crouchValue)
+			: CrouchAnimCurve.EditorCurveData.Eval(crouchValue);
+
+		const auto crouchPos = FMath::Lerp(CrouchOff,CrouchOn, crouchEval);
+
+		CameraRoot->SetRelativeLocation(crouchPos);
+	}
+	if (!IsCrouching)
+	{
+
+		auto crouchValue = CrouchCounter / ((GetFirstPersonCameraComponent()->GetRelativeLocation() - CrouchOff).Length() / CrouchSpeed);
+
+		const auto crouchEval = CrouchAnimCurve.ExternalCurve
+			? CrouchAnimCurve.ExternalCurve->GetFloatValue(crouchValue)
+			: CrouchAnimCurve.EditorCurveData.Eval(crouchValue);
+
+		const auto crouchPos = FMath::Lerp(CameraRoot->GetRelativeLocation(), CrouchOff, crouchEval);
+
+		CameraRoot->SetRelativeLocation(crouchPos);
 	}
 
 	if(IsInViewModel)
@@ -219,12 +247,19 @@ void ATheGiftCharacter::ClickEnd()
 void ATheGiftCharacter::CrouchStart()
 {
 	if(CanJump())
-		ACharacter::Crouch(false);
+	{
+		CrouchCounter = 0.f;
+		IsCrouching = true;
+	}
 }
 
 void ATheGiftCharacter::CrouchEnd()
 {
-	ACharacter::UnCrouch(false);
+	if(CanJump())
+	{
+		CrouchCounter = 0.f;
+		IsCrouching = false;
+	}
 }
 
 void ATheGiftCharacter::PeekRight()

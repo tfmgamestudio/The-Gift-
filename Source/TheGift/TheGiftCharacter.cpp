@@ -161,7 +161,7 @@ void ATheGiftCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATheGiftCharacter::Look);
 
 		// Interacting
-		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &ATheGiftCharacter::Interact);
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ATheGiftCharacter::Interact);
 
 		// Click
 		EnhancedInputComponent->BindAction(ClickAction, ETriggerEvent::Started, this, &ATheGiftCharacter::ClickStart);

@@ -14,20 +14,34 @@ class THEGIFT_API ANumberLock : public AActor, public IInteractableInterface
 	USceneComponent* RootCmp = nullptr;
 
 	UPROPERTY(EditDefaultsOnly)
-	UStaticMeshComponent* FirstNumberMesh = nullptr;
+	UStaticMeshComponent* MeshCmp = nullptr;
 
-	UPROPERTY(EditDefaultsOnly)
-	UStaticMeshComponent* SecondNumberMesh = nullptr;
+	UPROPERTY(VisibleAnywhere) bool CanInteract = true;
 
-	UPROPERTY(EditDefaultsOnly)
-	UStaticMeshComponent* ThirdNumberMesh = nullptr;
+	UPROPERTY()
+	int Number = 0;
+
+	UPROPERTY(EditAnywhere)
+	int LockPosition = 1; // 1, 2, 3
+
+	inline static int CorrectNumberOne = 2;
+	inline static int CorrectNumberTwo = 8;
+	inline static int CorrectNumberThree = 7;
+
+	inline static bool IsFirstNumberCorrect = false;
+	inline static bool IsSecondNumberCorrect = false;
+	inline static bool IsThirdNumberCorrect = false;
+
 	
 public:	
 	ANumberLock();
 
-	virtual void Interact_Implementation() override;
-
-protected:
 	virtual void BeginPlay() override;
+
+	virtual void Interact_Implementation() override;
+	virtual bool CanInteract_Implementation() override;
+
+	UFUNCTION()
+	void CorrectCombination();
 
 };

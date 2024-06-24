@@ -16,7 +16,7 @@ class THEGIFT_API ANumberLock : public AActor, public IInteractableInterface
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* MeshCmp = nullptr;
 
-	UPROPERTY(VisibleAnywhere) bool CanInteract = true;
+	inline static bool CanInteract = true;
 
 	UPROPERTY()
 	int Number = 0;

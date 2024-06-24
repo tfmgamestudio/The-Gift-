@@ -97,7 +97,20 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Weapon)
 	bool GetHasRifle();
 
+	UFUNCTION(BlueprintPure)
+	FVector GetCharacterVelocity() const;
 
+	UFUNCTION(BlueprintPure)
+	FRotator GetCharacterDirection() const;
+
+	UPROPERTY(BlueprintReadOnly)
+	FVector2D MovementVector {0, 0};
+	
+	UPROPERTY(BlueprintReadOnly)
+	FVector2D RotationVector {0, 0};
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere) bool IsMoving = false;
+	
 	bool LastPeek = false; //Right is true, Left is false
 	bool IsPeeking = false;
 

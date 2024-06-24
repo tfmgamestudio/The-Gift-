@@ -16,6 +16,7 @@
 #include "ModelViewer.h"
 #include "Blueprint/UserWidget.h"
 #include "Engine/LocalPlayer.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 #include "Logging/StructuredLog.h"
 
@@ -71,6 +72,8 @@ void ATheGiftCharacter::BeginPlay()
 void ATheGiftCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	IsMoving = GetCharacterMovement()->Velocity.SizeSquared() > 0.0f;
 
 	PeekCounter += DeltaTime;
 	CrouchCounter += DeltaTime;
@@ -186,12 +189,10 @@ void ATheGiftCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 void ATheGiftCharacter::Move(const FInputActionValue& Value)
 {
-	// input is a Vector2D
-	FVector2D MovementVector = Value.Get<FVector2D>();
-
+	MovementVector = Value.Get<FVector2D>();
+	
 	if (Controller != nullptr && !IsInViewModel)
 	{
-		// add movement 
 		AddMovementInput(GetActorForwardVector(), MovementVector.Y);
 		AddMovementInput(GetActorRightVector(), MovementVector.X);
 	}
@@ -314,4 +315,19 @@ void ATheGiftCharacter::SetHasRifle(bool bNewHasRifle)
 bool ATheGiftCharacter::GetHasRifle()
 {
 	return bHasRifle;
+}
+
+FVector ATheGiftCharacter::GetCharacterVelocity() const
+{
+	return GetCharacterMovement()->Velocity;
+}
+
+FRotator ATheGiftCharacter::GetCharacterDirection() const
+{
+	if (Controller != nullptr)
+	{
+		const FRotator Rotation = Controller->GetControlRotation();
+		return FRotator(0.0f, Rotation.Yaw, 0.0f);
+	}
+	return FRotator::ZeroRotator;
 }

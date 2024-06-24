@@ -124,7 +124,7 @@ public:
 	UPROPERTY(EditDefaultsOnly) FVector PeekLeftOn = {};
 	UPROPERTY(EditDefaultsOnly) FVector PeekOff = {};
 
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsCrouching = false;
 
 	float CrouchCounter = 0.f;

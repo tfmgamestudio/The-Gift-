@@ -14,4 +14,7 @@ class THEGIFT_API UMyAudioSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
 	
+	UPROPERTY(EditDefaultsOnly)
+	int MasterVolume = 1;
+
 };

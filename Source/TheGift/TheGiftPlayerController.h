@@ -33,5 +33,5 @@ protected:
 public:
 	// Main Widget
 	UPROPERTY(EditDefaultsOnly) TSubclassOf<UMainWidget> MainWidgetTemplate = nullptr;
-	UPROPERTY() UMainWidget* MainWidget = nullptr;
+	UPROPERTY(BlueprintReadWrite) UMainWidget* MainWidget = nullptr;
 };

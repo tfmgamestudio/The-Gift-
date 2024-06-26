@@ -7,6 +7,7 @@
 #include "InteractableInterface.h"
 #include "InteractWidget.h"
 #include "MainWidget.h"
+#include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -40,7 +41,7 @@ void UInteractRaycast::InteractRaycast(float DeltaTime)
 
 	if (World != nullptr)
 	{
-		if (PlayerCharacter == nullptr || PlayerController == nullptr)
+		if(PlayerCharacter == nullptr || PlayerController == nullptr)
 		{
 			return;
 		}
@@ -58,13 +59,25 @@ void UInteractRaycast::InteractRaycast(float DeltaTime)
 				{
 					PlayerCharacter->SetCurrentInteractingActor(HitResult.GetActor());
 
-
 					if (IInteractableInterface::Execute_CanInteract(HitResult.GetActor()))
 					{
 						if(Cast<AInteractableDoorBase>(HitResult.GetActor()))
+						{
 							PlayerController->MainWidget->InteractDoorWidget->SetVisibility(ESlateVisibility::Visible);
+
+							if(Cast<AInteractableDoorBase>(HitResult.GetActor())->Locked)
+							{
+								PlayerController->MainWidget->InteractDoorWidget->InteractDoorText->SetOpacity(1.0f);
+							}
+							else
+							{
+								PlayerController->MainWidget->InteractDoorWidget->InteractDoorText->SetOpacity(0.0f);
+							}
+						}
 						else
+						{
 							PlayerController->MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Visible);
+						}
 					}
 					else
 					{

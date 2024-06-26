@@ -6,6 +6,7 @@
 #include "TheGiftCharacter.h"
 #include "TheGiftPlayerController.h"
 #include "Kismet/GameplayStatics.h"
+#include "Logging/StructuredLog.h"
 
 // Sets default values
 AInteractableDoorBase::AInteractableDoorBase()
@@ -62,9 +63,16 @@ bool AInteractableDoorBase::CanInteract_Implementation()
 
 void AInteractableDoorBase::OnActivate()
 {
-	//CanInteract = false;
-	IsOpen = true;
-	BaseMesh->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
+	if(!Locked)
+	{
+		//CanInteract = false;
+		IsOpen = true;
+		BaseMesh->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
+	}
+	else
+	{
+		DoorLocked();
+	}
 }
 
 void AInteractableDoorBase::OnDeactivate()
@@ -74,4 +82,9 @@ void AInteractableDoorBase::OnDeactivate()
 	BaseMesh->SetRelativeRotation(FRotator(0.0f, 0.0f, 0.0f));
 }
 
+void AInteractableDoorBase::DoorLocked()
+{
+	UE_LOGFMT(LogTemp, Log, "Door Blocked");
+	// Play Sound at Location
 
+}

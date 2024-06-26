@@ -4,7 +4,9 @@
 #include "ModelViewerWidget.h"
 
 #include "InteractableObjectBase.h"
+#include "MainWidget.h"
 #include "Kismet/GameplayStatics.h"
+#include "Logging/StructuredLog.h"
 
 void UModelViewerWidget::SetUp()
 {		
@@ -18,12 +20,14 @@ void UModelViewerWidget::OnActivate()
 {
 	this->SetVisibility(ESlateVisibility::Visible);
 	// Block movement input
+	PlayerController->SetInputMode(FInputModeGameAndUI());
 	PlayerController->SetShowMouseCursor(true);
 }
 
 void UModelViewerWidget::OnDeactivate()
 {
 	this->SetVisibility(ESlateVisibility::Hidden);
+	PlayerController->SetInputMode(FInputModeGameOnly());
 	PlayerController->SetShowMouseCursor(false);
 	PlayerCharacter->IsInViewModel = false;
 	Cast<AInteractableObjectBase>(PlayerCharacter->GetInteractingActor())->CanInteract = true;

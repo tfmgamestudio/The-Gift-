@@ -26,6 +26,7 @@ public:
 	AInteractableDoorBase();
 	
 	UPROPERTY(VisibleAnywhere) bool CanInteract = true;
+	UPROPERTY(EditInstanceOnly) bool Locked = false;
 	
 	bool IsOpen = false;
 protected:
@@ -41,6 +42,7 @@ public:
 
 	UFUNCTION() void OnActivate();
 	UFUNCTION() void OnDeactivate();
+	UFUNCTION() void DoorLocked();
 private:
 	UPROPERTY() ATheGiftPlayerController* PlayerController = nullptr;
 	UPROPERTY() ATheGiftCharacter* PlayerCharacter = nullptr;

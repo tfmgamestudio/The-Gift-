@@ -149,9 +149,8 @@ void ATheGiftCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	// Set up action bindings
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
-		// Jumping
-		EnhancedInputComponent->BindAction(HideAction, ETriggerEvent::Started, this, &ATheGiftCharacter::Hide);
-		EnhancedInputComponent->BindAction(HideAction, ETriggerEvent::Completed, this, &ATheGiftCharacter::StopHiding);
+		// ClickInteract
+		EnhancedInputComponent->BindAction(ClickInteractAction, ETriggerEvent::Started, this, &ATheGiftCharacter::ClickInteract);
 
 		// Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATheGiftCharacter::Move);
@@ -277,9 +276,9 @@ void ATheGiftCharacter::StopPeek()
 	IsPeeking = false;
 }
 
-void ATheGiftCharacter::Hide()
+void ATheGiftCharacter::ClickInteract()
 {
-	UE_LOGFMT(LogTemp, Log, "Hide/ForceDoor Pressed");
+	UE_LOGFMT(LogTemp, Log, "Open Door Pressed");
 
 	if (InteractingActor)
 	{
@@ -291,16 +290,6 @@ void ATheGiftCharacter::Hide()
 			PlayerController->MainWidget->InteractDoorWidget->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
-}
-
-void ATheGiftCharacter::StopHiding()
-{
-	/*if(InteractingActor)
-		if(Cast<AInteractableDoorBase>(InteractingActor))
-		{
-			Cast<AInteractableDoorBase>(InteractingActor)->CanInteract = true;
-			PlayerController->MainWidget->InteractDoorWidget->SetVisibility(ESlateVisibility::Visible);
-		}*/
 }
 
 void ATheGiftCharacter::SetHasRifle(bool bNewHasRifle)

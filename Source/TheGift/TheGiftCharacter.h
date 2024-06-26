@@ -40,9 +40,9 @@ class ATheGiftCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	UInputMappingContext* DefaultMappingContext;
 
-	/** Jump Input Action */
+	/** ClickInteract Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
-	UInputAction* HideAction;
+	UInputAction* ClickInteractAction;
 
 	/** Move Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
@@ -165,8 +165,7 @@ protected:
 	void StopPeek();
 
 	/** Called for hide input */
-	void Hide();
-	void StopHiding();
+	void ClickInteract();
 
 protected:
 	// APawn interface

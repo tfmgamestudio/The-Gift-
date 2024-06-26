@@ -18,7 +18,8 @@ ANumberLock::ANumberLock()
 void ANumberLock::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	LightSystem = GetGameInstance()->GetSubsystem<ULightGameInstanceSubsystem>();
 }
 
 void ANumberLock::Interact_Implementation()

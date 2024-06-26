@@ -3,12 +3,16 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "InteractableInterface.h"
+#include "LightGameInstanceSubsystem.h"
 #include "NumberLock.generated.h"
 
 UCLASS()
 class THEGIFT_API ANumberLock : public AActor, public IInteractableInterface
 {
 	GENERATED_BODY()
+
+	UPROPERTY()
+	ULightGameInstanceSubsystem* LightSystem = nullptr;
 
 	UPROPERTY(EditDefaultsOnly)
 	USceneComponent* RootCmp = nullptr;

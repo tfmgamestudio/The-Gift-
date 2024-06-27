@@ -26,9 +26,9 @@ public:
 	AInteractableDoorBase();
 	
 	UPROPERTY(VisibleAnywhere) bool CanInteract = true;
-	UPROPERTY(EditInstanceOnly) bool Locked = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool Locked = false;
 	
-	bool IsOpen = false;
+	UPROPERTY(BlueprintReadWrite) bool IsOpen = false;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -40,8 +40,8 @@ public:
 	virtual void Interact_Implementation() override;
 	virtual bool CanInteract_Implementation() override;
 
-	UFUNCTION() void OnActivate();
-	UFUNCTION() void OnDeactivate();
+	UFUNCTION(BlueprintCallable) void OnActivate();
+	UFUNCTION(BlueprintCallable) void OnDeactivate();
 	UFUNCTION() void DoorLocked();
 private:
 	UPROPERTY() ATheGiftPlayerController* PlayerController = nullptr;

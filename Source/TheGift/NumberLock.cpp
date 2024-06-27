@@ -19,7 +19,11 @@ void ANumberLock::BeginPlay()
 {
 	Super::BeginPlay();
 
-	LightSystem = GetGameInstance()->GetSubsystem<ULightGameInstanceSubsystem>();
+	IsFirstNumberCorrect = false;
+	IsSecondNumberCorrect = false;
+	IsThirdNumberCorrect = false;
+	IsFourthNumberCorrect = false;
+	CanInteract = true;
 }
 
 void ANumberLock::Interact_Implementation()
@@ -50,9 +54,15 @@ void ANumberLock::Interact_Implementation()
 		else
 			IsThirdNumberCorrect = false;
 
+	else if (LockPosition == 4)
+		if (Number == CorrectNumberFour)
+			IsFourthNumberCorrect = true;
+		else
+			IsFourthNumberCorrect = false;
+
 	UE_LOGFMT(LogTemp, Log, "Number is: {0}", Number);
 
-	if (IsFirstNumberCorrect && IsSecondNumberCorrect && IsThirdNumberCorrect)
+	if (IsFirstNumberCorrect && IsSecondNumberCorrect && IsThirdNumberCorrect && IsFourthNumberCorrect)
 		CorrectCombination();
 }
 
@@ -68,4 +78,5 @@ void ANumberLock::CorrectCombination()
 {
 	UE_LOG(LogTemp, Log, TEXT("Lock Open"));
 	CanInteract = false;
+	Door->Locked = false;
 }

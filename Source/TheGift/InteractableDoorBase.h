@@ -34,7 +34,7 @@ public:
 	// Sets default values for this actor's properties
 	AInteractableDoorBase();
 	
-	UPROPERTY(VisibleAnywhere) bool CanInteract = true;
+	UPROPERTY(EditAnywhere) bool CanInteract = true;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool Locked = false;
 	
 	UPROPERTY(BlueprintReadWrite) bool IsOpen = false;

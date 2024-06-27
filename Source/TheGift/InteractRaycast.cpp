@@ -47,7 +47,7 @@ void UInteractRaycast::InteractRaycast(float DeltaTime)
 		}
 
 		const FVector SpawnLocation = PlayerController->PlayerCameraManager->GetCameraLocation();
-		const FVector EndLocation = SpawnLocation + PlayerController->PlayerCameraManager->GetActorForwardVector() * 10000.f;
+		const FVector EndLocation = SpawnLocation + PlayerController->PlayerCameraManager->GetActorForwardVector() * 200.f;
 
 		// TODO Send less raycast, not one per tick
 		FHitResult HitResult;

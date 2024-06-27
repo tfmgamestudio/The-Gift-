@@ -70,6 +70,9 @@ void AInteractableDoorBase::OnActivate()
 		//CanInteract = false;
 		IsOpen = true;
 		BaseMesh->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
+
+		if(OpenDoorSound)
+			UGameplayStatics::PlaySoundAtLocation(this, OpenDoorSound, GetActorLocation());
 	}
 	else
 	{
@@ -82,6 +85,8 @@ void AInteractableDoorBase::OnDeactivate()
 	//CanInteract = true;
 	IsOpen = false;
 	BaseMesh->SetRelativeRotation(FRotator(0.0f, 0.0f, 0.0f));
+	if(CloseDoorSound)
+		UGameplayStatics::PlaySoundAtLocation(this, CloseDoorSound, GetActorLocation());
 }
 
 void AInteractableDoorBase::DoorLocked()

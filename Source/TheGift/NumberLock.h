@@ -20,7 +20,15 @@ class THEGIFT_API ANumberLock : public AActor, public IInteractableInterface
 	UPROPERTY(EditAnywhere)
 	AInteractableDoorBase* Door = nullptr;
 
+	UPROPERTY(EditDefaultsOnly)
+	USoundBase* CorrectLockSound = nullptr;
+
+	UPROPERTY(EditDefaultsOnly)
+	TArray<USoundBase*> LockSounds = {};
+
 	inline static bool CanInteract = true;
+
+	inline static bool HasPlayedSound = false;
 
 	UPROPERTY()
 	int Number = 0;

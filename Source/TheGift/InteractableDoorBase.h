@@ -21,6 +21,12 @@ class THEGIFT_API AInteractableDoorBase : public AActor, public IInteractableInt
 	UPROPERTY(EditAnywhere) UStaticMeshComponent* BaseMesh = nullptr;
 	UPROPERTY(EditAnywhere) UStaticMeshComponent* BaseFrame = nullptr;
 
+	UPROPERTY(EditDefaultsOnly)
+	USoundBase* OpenDoorSound = nullptr;
+
+	UPROPERTY(EditDefaultsOnly)
+	USoundBase* CloseDoorSound = nullptr;
+
 public:	
 	// Sets default values for this actor's properties
 	AInteractableDoorBase();

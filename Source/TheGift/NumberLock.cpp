@@ -1,5 +1,6 @@
 #include "NumberLock.h"
 
+#include "Kismet/GameplayStatics.h"
 #include "Logging/StructuredLog.h"
 
 
@@ -29,6 +30,14 @@ void ANumberLock::BeginPlay()
 void ANumberLock::Interact_Implementation()
 {
 	IInteractableInterface::Interact_Implementation();
+	if(LockSounds.Num() > 0)
+	{
+		int32 RandomIndex = FMath::RandRange(0, LockSounds.Num() - 1);
+
+		USoundBase* RandomSound = LockSounds[RandomIndex];
+
+		UGameplayStatics::PlaySoundAtLocation(this, RandomSound, GetActorLocation());
+	}
 
 	MeshCmp->AddLocalRotation({ 0, 36, 0 });
 
@@ -78,5 +87,13 @@ void ANumberLock::CorrectCombination()
 {
 	UE_LOG(LogTemp, Log, TEXT("Lock Open"));
 	CanInteract = false;
-	Door->Locked = false;
+	if(Door)
+		Door->Locked = false;
+
+	if(!HasPlayedSound && CorrectLockSound)
+	{
+		
+		UGameplayStatics::PlaySoundAtLocation(this, CorrectLockSound, GetActorLocation());
+		HasPlayedSound = true;
+	}
 }

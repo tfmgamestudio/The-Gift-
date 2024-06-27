@@ -27,6 +27,9 @@ class THEGIFT_API AInteractableDoorBase : public AActor, public IInteractableInt
 	UPROPERTY(EditDefaultsOnly)
 	USoundBase* CloseDoorSound = nullptr;
 
+	UPROPERTY(EditDefaultsOnly)
+	USoundBase* LockedDoorSound = nullptr;
+
 public:	
 	// Sets default values for this actor's properties
 	AInteractableDoorBase();

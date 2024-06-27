@@ -92,6 +92,6 @@ void AInteractableDoorBase::OnDeactivate()
 void AInteractableDoorBase::DoorLocked()
 {
 	UE_LOGFMT(LogTemp, Log, "Door Blocked");
-	// Play Sound at Location
-
+	if(LockedDoorSound)
+		UGameplayStatics::PlaySoundAtLocation(this, LockedDoorSound, GetActorLocation());
 }

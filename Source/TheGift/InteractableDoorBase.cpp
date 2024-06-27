@@ -3,8 +3,10 @@
 
 #include "InteractableDoorBase.h"
 
+#include "MainWidget.h"
 #include "TheGiftCharacter.h"
 #include "TheGiftPlayerController.h"
+#include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 #include "Logging/StructuredLog.h"
 

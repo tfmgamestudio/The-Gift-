@@ -22,6 +22,7 @@ void UModelViewerWidget::OnActivate()
 	// Block movement input
 	PlayerController->SetInputMode(FInputModeGameAndUI());
 	PlayerController->SetShowMouseCursor(true);
+	PlayerController->SetMouseLocation((PlayerController->MainWidget->GetPaintSpaceGeometry().GetLocalSize().X / 2.0f), (PlayerController->MainWidget->GetPaintSpaceGeometry().GetLocalSize().Y / 2.0f));
 }
 
 void UModelViewerWidget::OnDeactivate()

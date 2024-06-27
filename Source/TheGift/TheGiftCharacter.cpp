@@ -15,6 +15,7 @@
 #include "MainWidget.h"
 #include "ModelViewer.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/TextBlock.h"
 #include "Engine/LocalPlayer.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -235,6 +236,8 @@ void ATheGiftCharacter::ClickEnd()
 	if(IsInViewModel)
 	{
 		IsClicked = false;
+		// Reset Mouse Position
+		PlayerController->SetMouseLocation((PlayerController->MainWidget->GetPaintSpaceGeometry().GetLocalSize().X / 2.0f), (PlayerController->MainWidget->GetPaintSpaceGeometry().GetLocalSize().Y / 2.0f));
 	}
 }
 
@@ -285,9 +288,16 @@ void ATheGiftCharacter::ClickInteract()
 		if (IInteractableInterface::Execute_CanInteract(InteractingActor))
 		{
 			if(Cast<AInteractableDoorBase>(InteractingActor))
+			{
 				IInteractableInterface::Execute_Interact(InteractingActor);
 
-			PlayerController->MainWidget->InteractDoorWidget->SetVisibility(ESlateVisibility::Hidden);
+				PlayerController->MainWidget->InteractDoorWidget->SetVisibility(ESlateVisibility::Hidden);
+
+				if(Cast<AInteractableDoorBase>(InteractingActor)->Locked)
+				{
+					PlayerController->MainWidget->InteractDoorWidget->InteractDoorText->SetOpacity(1.0f);
+				}
+			}
 		}
 	}
 }

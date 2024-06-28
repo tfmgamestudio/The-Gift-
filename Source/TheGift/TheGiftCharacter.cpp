@@ -124,7 +124,7 @@ void ATheGiftCharacter::Tick(float DeltaTime)
 		const auto crouchPos = FMath::Lerp(CameraRoot->GetRelativeLocation(), CrouchOff, crouchEval);
 
 		GetCharacterMovement()->MaxWalkSpeed;
-
+		
 		CameraRoot->SetRelativeLocation(crouchPos);
 	}
 

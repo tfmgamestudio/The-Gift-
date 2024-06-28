@@ -127,6 +127,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsCrouching = false;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float InitialSpeed = 0;
+
 	float CrouchCounter = 0.f;
 
 	UPROPERTY(EditDefaultsOnly) float CrouchSpeed = 10.f;

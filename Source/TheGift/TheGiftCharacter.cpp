@@ -138,6 +138,7 @@ void ATheGiftCharacter::Tick(float DeltaTime)
 			PlayerController->GetInputMouseDelta(MouseX, MouseY);
 			//UE_LOGFMT(LogTemp, Log, "Mouse position: {mx}, {my}", ("mx", MouseX), ("my", MouseY));
 
+			// TODO Falla al agacharse que sige tirando raycast y si se sale del objeto el Interacting actor es NULL
 			Cast<AInteractableObjectBase>(InteractingActor)->ModelViewerActor->Pivot->AddWorldRotation(FRotator(- MouseY * RotationSpeed, - MouseX * RotationSpeed, 0.f));
 		}
 	}
@@ -243,7 +244,7 @@ void ATheGiftCharacter::ClickEnd()
 
 void ATheGiftCharacter::CrouchStart()
 {
-	if(CanJump())
+	if(CanJump() && !IsInViewModel)
 	{
 		CrouchCounter = 0.f;
 		IsCrouching = true;

@@ -41,7 +41,7 @@ void UInteractRaycast::InteractRaycast(float DeltaTime)
 
 	if (World != nullptr)
 	{
-		if(PlayerCharacter == nullptr || PlayerController == nullptr)
+		if(PlayerCharacter == nullptr || PlayerController == nullptr || PlayerCharacter->IsInViewModel)
 		{
 			return;
 		}

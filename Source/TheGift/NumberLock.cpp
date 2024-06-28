@@ -1,5 +1,7 @@
 #include "NumberLock.h"
 
+
+#include "LightGameInstanceSubsystem.h"
 #include "Kismet/GameplayStatics.h"
 #include "Logging/StructuredLog.h"
 
@@ -71,6 +73,10 @@ void ANumberLock::Interact_Implementation()
 
 	UE_LOGFMT(LogTemp, Log, "Number is: {0}", Number);
 
+	ULightGameInstanceSubsystem* LightSubsystem = GetGameInstance()->GetSubsystem<ULightGameInstanceSubsystem>();
+
+	LightSubsystem->SwitchAllLights();
+
 	if (IsFirstNumberCorrect && IsSecondNumberCorrect && IsThirdNumberCorrect && IsFourthNumberCorrect)
 		CorrectCombination();
 }
@@ -94,6 +100,11 @@ void ANumberLock::CorrectCombination()
 	{
 		
 		UGameplayStatics::PlaySoundAtLocation(this, CorrectLockSound, GetActorLocation());
+
+		ULightGameInstanceSubsystem* LightSubsystem = GetGameInstance()->GetSubsystem<ULightGameInstanceSubsystem>();
+
+		LightSubsystem->SwitchBasementHallwayLights();
+
 		HasPlayedSound = true;
 	}
 }

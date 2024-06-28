@@ -25,7 +25,37 @@ void ADefaultPointLight::BeginPlay()
 
 	LightSystem = GetGameInstance()->GetSubsystem<ULightGameInstanceSubsystem>();
 
-	LightSystem->LightsArray.Add(this);
+	LightSystem->TotalLightsArray.Add(this);
+
+	if (IsFromMainHallway)
+		LightSystem->MainHallwayLightsArray.Add(this);
+
+	if(IsFromBasementHallway)
+		LightSystem->BasementHallwayLightsArray.Add(this);
+
+	if (IsFromLivingRoom)
+		LightSystem->LivingRoomLightsArray.Add(this);
+
+	if (IsFromKitchen)
+		LightSystem->KitchenLightsArray.Add(this);
+
+	if (IsFromGarage)
+		LightSystem->GarageLightsArray.Add(this);
+
+	if (IsFromBathroom)
+		LightSystem->BathroomLightsArray.Add(this);
+
+	if (IsFromUpstairsHallway)
+		LightSystem->UpstairsHallwayLightsArray.Add(this);
+
+	if (IsFromUpstairsKidRoom)
+		LightSystem->UpstairsKidRoomLightsArray.Add(this);
+
+	if (IsFromUpstairsParentsRoom)
+		LightSystem->UpstairsParentsRoomLightsArray.Add(this);
+
+	if (IsFromUpstairsFinalRoom)
+		LightSystem->UpstairsFinalRoomLightsArray.Add(this);
 }
 
 // Called every frame

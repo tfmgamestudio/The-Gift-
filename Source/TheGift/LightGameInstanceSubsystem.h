@@ -57,122 +57,122 @@ public:
 	TArray<ADefaultPointLight*> UpstairsFinalRoomLightsArray = {};
 
 	//-----ALL LIGHTS-----
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void TurnOnAllLights();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void TurnOffAllLights();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void SwitchAllLights();
 
 	//-----MAIN HALLWAY-----
 
 	void TurnOnMainHallwayLights();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void TurnOffMainHallwayLights();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void SwitchMainHallwayLights();
 
 	//-----BASEMENT-----
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void TurnOnBasementHallwayLights();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void TurnOffBasementHallwayLights();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void SwitchBasementHallwayLights();
 
 	//-----LIVING ROOM-----
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void TurnOnLivingRoomLights();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void TurnOffLivingRoomLights();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void SwitchLivingRoomLights();
 
 	//-----KITCHEN-----
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void TurnOnKitchenLights();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void TurnOffKitchenLights();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void SwitchKitchenLights();
 
 	//-----GARAGE-----
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void TurnOnGarageLights();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void TurnOffGarageLights();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void SwitchGarageLights();
 
 	//-----BATHROOM-----
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void TurnOnBathroomLights();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void TurnOffBathroomLights();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void SwitchBathroomLights();
 
 	//-----UPSTAIRS HALLWAY-----
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void TurnOnUpstairsHallwayLights();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void TurnOffUpstairsHallwayLights();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void SwitchUpstairsHallwayLights();
 
 	//-----UPSTAIRS KID ROOM-----
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void TurnOnUpstairsKidRoomLights();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void TurnOffUpstairsKidRoomLights();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void SwitchUpstairsKidRoomLights();
 
 	//-----UPSTAIRS PARENTS ROOM-----
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void TurnOnUpstairsParentsRoomLights();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void TurnOffUpstairsParentsRoomLights();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void SwitchUpstairsParentsRoomLights();
 
 	//-----UPSTAIRS FINAL ROOM-----
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void TurnOnUpstairsFinalRoomLights();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void TurnOffUpstairsFinalRoomLights();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void SwitchUpstairsFinalRoomLights();
 
 };

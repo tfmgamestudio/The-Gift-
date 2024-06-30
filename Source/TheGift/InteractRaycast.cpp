@@ -64,6 +64,8 @@ void UInteractRaycast::InteractRaycast(float DeltaTime)
 						if(Cast<AInteractableDoorBase>(HitResult.GetActor()))
 						{
 							PlayerController->MainWidget->InteractDoorWidget->SetVisibility(ESlateVisibility::Visible);
+
+							// Is Door Locked
 							PlayerController->MainWidget->InteractDoorWidget->InteractDoorText->SetOpacity(0.0f);
 							if(!Cast<AInteractableDoorBase>(HitResult.GetActor())->Locked)
 							{

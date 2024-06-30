@@ -30,14 +30,27 @@ class THEGIFT_API AInteractableDoorBase : public AActor, public IInteractableInt
 	UPROPERTY(EditDefaultsOnly)
 	USoundBase* LockedDoorSound = nullptr;
 
+	UPROPERTY(EditDefaultsOnly)
+	USoundBase* CreepyOpenDoorSound = nullptr;
+
+
+
 public:	
 	// Sets default values for this actor's properties
 	AInteractableDoorBase();
 	
 	UPROPERTY(EditAnywhere) bool CanInteract = true;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) bool Locked = false;
-	
+
 	UPROPERTY(BlueprintReadWrite) bool IsOpen = false;
+	UPROPERTY(EditAnywhere) bool IsMoving = false;
+	UPROPERTY(EditAnywhere) bool PlaysCreepySound = false;
+	UPROPERTY(EditDefaultsOnly) FRuntimeFloatCurve AnimationCurve;
+	UPROPERTY(EditDefaultsOnly) float DoorTimeAnim = 1.0f;
+	UPROPERTY(EditAnywhere) float Speed = 2.0f;
+	UPROPERTY(EditAnywhere) float OpenRotationDegrees = 90.0f;
+	UPROPERTY(EditAnywhere) float CloseRotationDegrees = 0.0f;
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -55,4 +68,11 @@ public:
 private:
 	UPROPERTY() ATheGiftPlayerController* PlayerController = nullptr;
 	UPROPERTY() ATheGiftCharacter* PlayerCharacter = nullptr;
+
+	float Counter = 0.0f;
+	float InitialRotationDegrees = 0.0f;
+	float FinalRotationDegrees = 0.0f;
+	bool DoOnce = false;
+
+	void AnimEnded();
 };

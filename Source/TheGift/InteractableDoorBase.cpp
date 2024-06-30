@@ -43,6 +43,24 @@ void AInteractableDoorBase::BeginPlay()
 void AInteractableDoorBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (IsMoving)
+	{
+		Counter += DeltaTime;
+
+		const auto Value = Counter / DoorTimeAnim;
+
+		const auto Eval = AnimationCurve.ExternalCurve
+			? AnimationCurve.ExternalCurve->GetFloatValue(Value)
+			: AnimationCurve.EditorCurveData.Eval(Value);
+
+		const auto Rot = FMath::Lerp(InitialRotationDegrees, FinalRotationDegrees , Eval);
+
+		BaseMesh->SetRelativeRotation(FRotator(0.0f, Rot, 0.0f));
+
+		if(Counter >= DoorTimeAnim)
+			AnimEnded();
+	}
 }
 
 void AInteractableDoorBase::Interact_Implementation()
@@ -67,12 +85,23 @@ void AInteractableDoorBase::OnActivate()
 {
 	if(!Locked)
 	{
-		//CanInteract = false;
+		CanInteract = false;
 		IsOpen = true;
-		BaseMesh->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
+		IsMoving = true;
+
+		InitialRotationDegrees = CloseRotationDegrees;
+		FinalRotationDegrees = OpenRotationDegrees;
 
 		if(OpenDoorSound)
+		{
 			UGameplayStatics::PlaySoundAtLocation(this, OpenDoorSound, GetActorLocation());
+			if(!DoOnce && PlaysCreepySound)
+			{
+				DoOnce = true;
+				UGameplayStatics::PlaySoundAtLocation(this, CreepyOpenDoorSound, GetActorLocation());
+			}
+		}
+			
 	}
 	else
 	{
@@ -82,9 +111,13 @@ void AInteractableDoorBase::OnActivate()
 
 void AInteractableDoorBase::OnDeactivate()
 {
-	//CanInteract = true;
+	CanInteract = false;
 	IsOpen = false;
-	BaseMesh->SetRelativeRotation(FRotator(0.0f, 0.0f, 0.0f));
+	IsMoving = true;
+
+	InitialRotationDegrees = OpenRotationDegrees;
+	FinalRotationDegrees = CloseRotationDegrees;
+
 	if(CloseDoorSound)
 		UGameplayStatics::PlaySoundAtLocation(this, CloseDoorSound, GetActorLocation());
 }
@@ -94,4 +127,12 @@ void AInteractableDoorBase::DoorLocked()
 	UE_LOGFMT(LogTemp, Log, "Door Blocked");
 	if(LockedDoorSound)
 		UGameplayStatics::PlaySoundAtLocation(this, LockedDoorSound, GetActorLocation());
+}
+
+void AInteractableDoorBase::AnimEnded()
+{
+	UE_LOGFMT(LogTemp, Warning, "Anim Ended");
+	Counter = 0.0f;
+	IsMoving = false;
+	CanInteract = true;
 }

@@ -6,7 +6,6 @@
 #include "InteractDoorWidget.h"
 #include "InteractWidget.h"
 #include "ModelViewerWidget.h"
-#include "TheGiftCharacter.h"
 #include "Blueprint/UserWidget.h"
 
 #include "MainWidget.generated.h"
@@ -18,8 +17,6 @@ UCLASS()
 class THEGIFT_API UMainWidget : public UUserWidget
 {
 	GENERATED_BODY()
-
-	
 
 public:
 	

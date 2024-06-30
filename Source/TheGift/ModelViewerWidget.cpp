@@ -6,7 +6,6 @@
 #include "InteractableObjectBase.h"
 #include "MainWidget.h"
 #include "Kismet/GameplayStatics.h"
-#include "Logging/StructuredLog.h"
 
 void UModelViewerWidget::SetUp()
 {		

@@ -7,3 +7,13 @@ void UInteractWidget::SetUp()
 {
 	this->SetVisibility(ESlateVisibility::Hidden);
 }
+
+void UInteractWidget::OnActivate()
+{
+
+}
+
+void UInteractWidget::OnDeactivate()
+{
+
+}

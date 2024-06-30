@@ -138,8 +138,7 @@ public:
 	UPROPERTY(EditDefaultsOnly) FVector CrouchOn = {};
 	UPROPERTY(EditDefaultsOnly) FVector CrouchOff = {};
 
-
-	UPROPERTY(BlueprintReadWrite) bool IsInViewModel = false;
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere) bool IsInViewModel = false;
 
 	UPROPERTY(BlueprintReadWrite) bool IsClicked = false;
 	UPROPERTY(BlueprintReadWrite) float RotationSpeed = 2.0f;
@@ -181,11 +180,9 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
-	UFUNCTION() void SetCurrentInteractingActor(AActor* Interactable)
-	{
-		InteractingActor = Interactable;
-	}
-	UFUNCTION() AActor* GetInteractingActor() { return InteractingActor;} 
+	UFUNCTION() void SetCurrentInteractingActor(AActor* Interactable) { InteractingActor = Interactable; }
+
+	UFUNCTION() AActor* GetInteractingActor() { return InteractingActor;}
 
 private:
 	UPROPERTY(Transient, SkipSerialization) AActor* InteractingActor = nullptr;

@@ -22,4 +22,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UTextBlock* InteractText = nullptr;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UImage* InteractImage = nullptr;
 
+	UFUNCTION(BlueprintCallable) void OnActivate();
+	UFUNCTION(BlueprintCallable) void OnDeactivate();
+
 };

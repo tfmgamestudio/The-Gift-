@@ -34,6 +34,8 @@ public:
 	UPROPERTY(EditInstanceOnly) FRotator ObjectRotation = { 0.0f, 0.0f, 0.0f};
 	UPROPERTY(EditInstanceOnly) FVector ObjectOffset = { 0.0f, 0.0f, 0.0f};
 
+	// TODO If readable, show text
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

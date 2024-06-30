@@ -229,6 +229,8 @@ void ATheGiftCharacter::ClickStart()
 	if(IsInViewModel)
 	{
 		IsClicked = true;
+		// TODO Activate readable widget if readable
+
 	}
 }
 
@@ -292,12 +294,12 @@ void ATheGiftCharacter::ClickInteract()
 			{
 				IInteractableInterface::Execute_Interact(InteractingActor);
 
-				PlayerController->MainWidget->InteractDoorWidget->SetVisibility(ESlateVisibility::Hidden);
+				//PlayerController->MainWidget->InteractDoorWidget->SetVisibility(ESlateVisibility::Hidden);
 
-				if(Cast<AInteractableDoorBase>(InteractingActor)->Locked)
+				/*if(Cast<AInteractableDoorBase>(InteractingActor)->Locked)
 				{
 					PlayerController->MainWidget->InteractDoorWidget->InteractDoorText->SetOpacity(1.0f);
-				}
+				}*/
 			}
 		}
 	}

@@ -61,32 +61,32 @@ void UInteractRaycast::InteractRaycast(float DeltaTime)
 
 					if (IInteractableInterface::Execute_CanInteract(HitResult.GetActor()))
 					{
-						if(Cast<AInteractableDoorBase>(HitResult.GetActor()))
-						{
-							PlayerController->MainWidget->InteractDoorWidget->SetVisibility(ESlateVisibility::Visible);
+						//if(Cast<AInteractableDoorBase>(HitResult.GetActor()))
+						//{
+						//	PlayerController->MainWidget->InteractDoorWidget->SetVisibility(ESlateVisibility::Visible);
 
-							// Is Door Locked
-							PlayerController->MainWidget->InteractDoorWidget->InteractDoorText->SetOpacity(0.0f);
-							if(!Cast<AInteractableDoorBase>(HitResult.GetActor())->Locked)
-							{
-								PlayerController->MainWidget->InteractDoorWidget->InteractDoorText->SetOpacity(0.0f);
-							}
-							else
-							{
-								PlayerController->MainWidget->InteractDoorWidget->InteractDoorText->SetOpacity(1.0f);
-							}
-						}
-						else
-						{
+						//	// Is Door Locked
+						//	PlayerController->MainWidget->InteractDoorWidget->InteractDoorText->SetOpacity(0.0f);
+						//	if(!Cast<AInteractableDoorBase>(HitResult.GetActor())->Locked)
+						//	{
+						//		PlayerController->MainWidget->InteractDoorWidget->InteractDoorText->SetOpacity(0.0f);
+						//	}
+						//	else
+						//	{
+						//		PlayerController->MainWidget->InteractDoorWidget->InteractDoorText->SetOpacity(1.0f);
+						//	}
+						//}
+						//else
+						//{
 							PlayerController->MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Visible);
-						}
+						//}
 					}
-					else
+					/*else
 					{
 						if(Cast<AInteractableDoorBase>(HitResult.GetActor()))
 							if(Cast<AInteractableDoorBase>(HitResult.GetActor())->IsOpen == true)
 								PlayerController->MainWidget->InteractDoorWidget->SetVisibility(ESlateVisibility::Visible);
-					}
+					}*/
 				}
 			}
 			else
@@ -94,7 +94,7 @@ void UInteractRaycast::InteractRaycast(float DeltaTime)
 				if (PlayerCharacter)
 				{
 					PlayerCharacter->SetCurrentInteractingActor(nullptr);
-					PlayerController->MainWidget->InteractDoorWidget->SetVisibility(ESlateVisibility::Hidden);
+					//PlayerController->MainWidget->InteractDoorWidget->SetVisibility(ESlateVisibility::Hidden);
 					PlayerController->MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Hidden);
 				}
 			}
@@ -102,7 +102,7 @@ void UInteractRaycast::InteractRaycast(float DeltaTime)
 		else
 		{
 			PlayerCharacter->SetCurrentInteractingActor(nullptr);
-			PlayerController->MainWidget->InteractDoorWidget->SetVisibility(ESlateVisibility::Hidden);
+			//PlayerController->MainWidget->InteractDoorWidget->SetVisibility(ESlateVisibility::Hidden);
 			PlayerController->MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}

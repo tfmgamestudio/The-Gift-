@@ -98,7 +98,6 @@ void AInteractableDoorBase::OnActivate()
 				UGameplayStatics::PlaySoundAtLocation(this, CreepyOpenDoorSound, GetActorLocation());
 			}
 		}
-			
 	}
 	else
 	{

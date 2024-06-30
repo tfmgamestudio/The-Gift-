@@ -24,5 +24,4 @@ public:
 
 	UFUNCTION(BlueprintCallable) void OnActivate();
 	UFUNCTION(BlueprintCallable) void OnDeactivate();
-
 };

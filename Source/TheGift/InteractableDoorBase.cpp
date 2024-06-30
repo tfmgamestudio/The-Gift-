@@ -3,12 +3,9 @@
 
 #include "InteractableDoorBase.h"
 
-#include "MainWidget.h"
 #include "TheGiftCharacter.h"
 #include "TheGiftPlayerController.h"
-#include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
-#include "Logging/StructuredLog.h"
 
 // Sets default values
 AInteractableDoorBase::AInteractableDoorBase()
@@ -124,14 +121,12 @@ void AInteractableDoorBase::OnDeactivate()
 
 void AInteractableDoorBase::DoorLocked()
 {
-	UE_LOGFMT(LogTemp, Log, "Door Blocked");
 	if(LockedDoorSound)
 		UGameplayStatics::PlaySoundAtLocation(this, LockedDoorSound, GetActorLocation());
 }
 
 void AInteractableDoorBase::AnimEnded()
 {
-	UE_LOGFMT(LogTemp, Warning, "Anim Ended");
 	Counter = 0.0f;
 	IsMoving = false;
 	CanInteract = true;

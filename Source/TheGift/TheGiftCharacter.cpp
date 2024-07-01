@@ -278,7 +278,7 @@ void ATheGiftCharacter::Interact()
 		if (IInteractableInterface::Execute_CanInteract(InteractingActor))
 		{
 			IInteractableInterface::Execute_Interact(InteractingActor);
-			PlayerController->MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Hidden);
+			PlayerController->MainWidget->InteractWidget->InteractText->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
 }

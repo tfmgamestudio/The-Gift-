@@ -5,7 +5,6 @@
 
 #include "MainWidget.h"
 #include "ModelViewer.h"
-#include "Internationalization/StringTableRegistry.h"
 #include "Kismet/GameplayStatics.h"
 #include "Logging/StructuredLog.h"
 

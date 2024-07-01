@@ -6,6 +6,5 @@
 void UMainWidget::SetUp()
 {
 	InteractWidget->SetUp();
-	//InteractDoorWidget->SetUp();
 	ModelViewerWidget->SetUp();
 }

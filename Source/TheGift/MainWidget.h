@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "InteractDoorWidget.h"
 #include "InteractWidget.h"
 #include "ModelViewerWidget.h"
 #include "Blueprint/UserWidget.h"

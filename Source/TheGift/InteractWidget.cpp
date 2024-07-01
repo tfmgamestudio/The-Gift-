@@ -3,9 +3,14 @@
 
 #include "InteractWidget.h"
 
+#include "Components/Image.h"
+#include "Components/TextBlock.h"
+
 void UInteractWidget::SetUp()
 {
-	this->SetVisibility(ESlateVisibility::Hidden);
+	//this->SetVisibility(ESlateVisibility::Hidden);
+	this->InteractImage->SetVisibility(ESlateVisibility::Visible);
+	this->InteractText->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UInteractWidget::OnActivate()

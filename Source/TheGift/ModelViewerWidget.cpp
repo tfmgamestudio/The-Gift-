@@ -5,6 +5,7 @@
 
 #include "InteractableObjectBase.h"
 #include "MainWidget.h"
+#include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 
 void UModelViewerWidget::SetUp()
@@ -18,6 +19,7 @@ void UModelViewerWidget::SetUp()
 void UModelViewerWidget::OnActivate()
 {
 	this->SetVisibility(ESlateVisibility::Visible);
+	PlayerController->MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Hidden);
 	// Block movement input
 	PlayerController->SetInputMode(FInputModeGameAndUI());
 	PlayerController->SetShowMouseCursor(true);
@@ -27,6 +29,8 @@ void UModelViewerWidget::OnActivate()
 void UModelViewerWidget::OnDeactivate()
 {
 	this->SetVisibility(ESlateVisibility::Hidden);
+	PlayerController->MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Visible);
+	PlayerController->MainWidget->InteractWidget->InteractText->SetVisibility(ESlateVisibility::Hidden);
 	PlayerController->SetInputMode(FInputModeGameOnly());
 	PlayerController->SetShowMouseCursor(false);
 	PlayerCharacter->IsInViewModel = false;

@@ -12,8 +12,8 @@ class THEGIFT_API UMainMenuWidget : public UUserWidget
 public:
 	
 	// Principal buttons
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget)) UUserWidget* MainButtonWidget = nullptr;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget)) UUserWidget* SettingsButtonWidget = nullptr;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget)) UUserWidget* MainButtonWidget = nullptr;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (BindWidget)) UUserWidget* SettingsButtonWidget = nullptr;
 
 	// // Secondary buttons
 	// UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UUserWidget* NewGameButton = nullptr;
@@ -25,5 +25,5 @@ public:
 
 protected:
 
-	virtual void NativeConstruct() override;
+	//virtual void NativeConstruct() override;
 };

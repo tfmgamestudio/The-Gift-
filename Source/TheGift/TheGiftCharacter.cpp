@@ -69,7 +69,7 @@ void ATheGiftCharacter::Tick(float DeltaTime)
 
 	IsMoving = GetCharacterMovement()->Velocity.SizeSquared() > 0.0f;
 
-	PeekCounter += DeltaTime;
+	/*PeekCounter += DeltaTime;
 	CrouchCounter += DeltaTime;
 	if (IsPeeking)
 	{
@@ -126,7 +126,7 @@ void ATheGiftCharacter::Tick(float DeltaTime)
 		GetCharacterMovement()->MaxWalkSpeed;
 		
 		CameraRoot->SetRelativeLocation(crouchPos);
-	}
+	}*/
 
 	if(IsInViewModel)
 	{
@@ -136,9 +136,6 @@ void ATheGiftCharacter::Tick(float DeltaTime)
 			float MouseY = 0.0f;
 
 			PlayerController->GetInputMouseDelta(MouseX, MouseY);
-			//UE_LOGFMT(LogTemp, Log, "Mouse position: {mx}, {my}", ("mx", MouseX), ("my", MouseY));
-
-			// TODO Falla al agacharse que sige tirando raycast y si se sale del objeto el Interacting actor es NULL
 			Cast<AInteractableObjectBase>(InteractingActor)->ModelViewerActor->Pivot->AddWorldRotation(FRotator(- MouseY * RotationSpeed, - MouseX * RotationSpeed, 0.f));
 		}
 	}

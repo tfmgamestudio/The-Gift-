@@ -5,6 +5,7 @@
 
 #include "MainWidget.h"
 #include "ModelViewer.h"
+#include "Internationalization/StringTableRegistry.h"
 #include "Kismet/GameplayStatics.h"
 #include "Logging/StructuredLog.h"
 
@@ -82,5 +83,11 @@ void AInteractableObjectBase::OnActivate()
 		}
 		PlayerCharacter->IsInViewModel = true;
 		PlayerController->MainWidget->ModelViewerWidget->OnActivate();
+
+		if(IsReadable)
+		{
+			PlayerController->MainWidget->InteractableText = InteractableText;
+			PlayerController->MainWidget->ReadableWidget->SetVisibility(ESlateVisibility::Visible);
+		}
 	}
 }

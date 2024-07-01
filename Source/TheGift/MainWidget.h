@@ -26,8 +26,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UUserWidget* StaminaBarWidget = nullptr;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UUserWidget* TutorialWidget = nullptr;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UInteractWidget* InteractWidget = nullptr;
-	//UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UInteractDoorWidget* InteractDoorWidget = nullptr;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UModelViewerWidget* ModelViewerWidget = nullptr;
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget)) UUserWidget* ReadableWidget = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) FText InteractableText;
 
 };

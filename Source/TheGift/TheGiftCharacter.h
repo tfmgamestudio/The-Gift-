@@ -182,7 +182,7 @@ public:
 
 	UFUNCTION() void SetCurrentInteractingActor(AActor* Interactable) { InteractingActor = Interactable; }
 
-	UFUNCTION() AActor* GetInteractingActor() { return InteractingActor;}
+	UFUNCTION(BlueprintCallable) AActor* GetInteractingActor() { return InteractingActor;}
 
 private:
 	UPROPERTY(Transient, SkipSerialization) AActor* InteractingActor = nullptr;

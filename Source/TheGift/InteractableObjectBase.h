@@ -25,7 +25,7 @@ public:
 	AInteractableObjectBase();
 
 	UPROPERTY(VisibleAnywhere) bool CanInteract = true;
-	UPROPERTY(VisibleAnywhere) bool CanBeInspected = true;
+	UPROPERTY(EditAnywhere) bool CanBeInspected = true;
 
 	UPROPERTY(EditAnywhere) UStaticMeshComponent* BaseMesh = nullptr;
 	UPROPERTY() UMaterialInterface* BaseMaterial = nullptr;
@@ -34,7 +34,8 @@ public:
 	UPROPERTY(EditInstanceOnly) FRotator ObjectRotation = { 0.0f, 0.0f, 0.0f};
 	UPROPERTY(EditInstanceOnly) FVector ObjectOffset = { 0.0f, 0.0f, 0.0f};
 
-	// TODO If readable, show text
+	UPROPERTY(EditAnywhere) bool IsReadable = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) FText InteractableText;
 
 protected:
 	// Called when the game starts or when spawned

@@ -152,7 +152,7 @@ void ATheGiftCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		// ClickInteract
-		EnhancedInputComponent->BindAction(ClickInteractAction, ETriggerEvent::Started, this, &ATheGiftCharacter::ClickInteract);
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ATheGiftCharacter::Interact);
 
 		// Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATheGiftCharacter::Move);
@@ -161,7 +161,7 @@ void ATheGiftCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATheGiftCharacter::Look);
 
 		// Interacting
-		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Started, this, &ATheGiftCharacter::Interact);
+		EnhancedInputComponent->BindAction(TakePillsAction, ETriggerEvent::Started, this, &ATheGiftCharacter::TakePills);
 
 		// Click
 		EnhancedInputComponent->BindAction(ClickAction, ETriggerEvent::Started, this, &ATheGiftCharacter::ClickStart);
@@ -208,20 +208,9 @@ void ATheGiftCharacter::Look(const FInputActionValue& Value)
 	}
 }
 
-void ATheGiftCharacter::Interact()
+void ATheGiftCharacter::TakePills()
 {
-	UE_LOGFMT(LogTemp, Log, "InteractPressed");
 
-	if (InteractingActor)
-	{
-		if (IInteractableInterface::Execute_CanInteract(InteractingActor))
-		{
-			if(!Cast<AInteractableDoorBase>(InteractingActor))
-				IInteractableInterface::Execute_Interact(InteractingActor);
-
-			PlayerController->MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Hidden);
-		}
-	}	
 }
 
 void ATheGiftCharacter::ClickStart()
@@ -246,20 +235,20 @@ void ATheGiftCharacter::ClickEnd()
 
 void ATheGiftCharacter::CrouchStart()
 {
-	if(CanJump() && !IsInViewModel)
+	/*if(CanJump() && !IsInViewModel)
 	{
 		CrouchCounter = 0.f;
 		IsCrouching = true;
-	}
+	}*/
 }
 
 void ATheGiftCharacter::CrouchEnd()
 {
-	if(CanJump())
+	/*if(CanJump())
 	{
 		CrouchCounter = 0.f;
 		IsCrouching = false;
-	}
+	}*/
 }
 
 void ATheGiftCharacter::PeekRight()
@@ -282,25 +271,17 @@ void ATheGiftCharacter::StopPeek()
 	IsPeeking = false;
 }
 
-void ATheGiftCharacter::ClickInteract()
+void ATheGiftCharacter::Interact()
 {
-	UE_LOGFMT(LogTemp, Log, "Open Door Pressed");
+	if(IsInViewModel)
+		return;
 
 	if (InteractingActor)
 	{
 		if (IInteractableInterface::Execute_CanInteract(InteractingActor))
 		{
-			if(Cast<AInteractableDoorBase>(InteractingActor))
-			{
-				IInteractableInterface::Execute_Interact(InteractingActor);
-
-				//PlayerController->MainWidget->InteractDoorWidget->SetVisibility(ESlateVisibility::Hidden);
-
-				/*if(Cast<AInteractableDoorBase>(InteractingActor)->Locked)
-				{
-					PlayerController->MainWidget->InteractDoorWidget->InteractDoorText->SetOpacity(1.0f);
-				}*/
-			}
+			IInteractableInterface::Execute_Interact(InteractingActor);
+			PlayerController->MainWidget->InteractWidget->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
 }

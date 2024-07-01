@@ -42,7 +42,7 @@ class ATheGiftCharacter : public ACharacter
 
 	/** ClickInteract Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
-	UInputAction* ClickInteractAction;
+	UInputAction* InteractAction;
 
 	/** Move Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
@@ -50,7 +50,7 @@ class ATheGiftCharacter : public ACharacter
 
 	/** Interact Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
-	UInputAction* InteractAction;
+	UInputAction* TakePillsAction;
 
 	/** Click Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
@@ -167,7 +167,7 @@ protected:
 	void StopPeek();
 
 	/** Called for hide input */
-	void ClickInteract();
+	void TakePills();
 
 protected:
 	// APawn interface
